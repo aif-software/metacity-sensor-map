@@ -1,0 +1,15 @@
+@use "@angular/material" as mat;
+@include mat.core();
+
+@font-face {
+  font-family: Messina-sans;
+  src: url("/MessinaSans-Regular.otf");
+  format: "opentype";
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Messina-sans;
+}

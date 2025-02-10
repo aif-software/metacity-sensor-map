@@ -1,0 +1,77 @@
+<div class="map-container">
+  <div class="map-frame">
+    <div class="map-frame">
+      <div id="map">
+        <div class="leaflet-top">
+          <button
+            mat-flat-button
+            class="legend-button"
+            (click)="toggleLegend()"
+          >
+            <mat-icon
+              fontSet="material-symbols-outlined"
+              fontIcon="help_outline"
+            ></mat-icon>
+          </button>
+          <mat-card class="legend" *ngIf="legendVisible">
+            <div class="legend-content">
+              <div class="legend-items">
+                <img class="legend-images" src="/markericon_grey.png" />
+                <div class="legend-text">Unselected</div>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="legend-items">
+                <img class="legend-images" src="/markericon_green.png" />
+                <div class="legend-text">Selected</div>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="legend-items">
+                <img class="legend-images" src="/markericon_yellow.png" />
+                <div class="legend-text">Maintenance</div>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="legend-items">
+                <img class="legend-images" src="/markericon_red.png" />
+                <div class="legend-text">Offline</div>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <nav class="leaflet-top leaflet-right">
+          <mat-button-toggle-group
+            name="floorButtons"
+            aria-label="floorButtons"
+            vertical="true"
+            multiple
+          >
+            <ng-container *ngFor="let level of this.floorKeys">
+              <mat-button-toggle
+                class="floorlevel"
+                matTooltip="Floor level"
+                matTooltipPosition="left"
+                value="{{ level }}"
+                (change)="toggleFloorVisibility(togglevalue.value)"
+                #togglevalue
+                >{{ level }}</mat-button-toggle
+              >
+            </ng-container>
+          </mat-button-toggle-group>
+        </nav>
+        <nav class="leaflet-right leaflet-bottom">
+          <div>
+            <button
+              mat-flat-button
+              matTooltip="There are some sensors that are currently offline, but they may have historical data"
+              matTooltipPosition="left"
+              class="select"
+              (click)="toggleOfflineSensors()"
+            >
+              <span *ngIf="offlineDevicesVisible"> Hide offline devices </span>
+              <span *ngIf="!offlineDevicesVisible"> Show offline devices </span>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>

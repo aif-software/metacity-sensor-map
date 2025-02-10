@@ -1,0 +1,116 @@
+.map-container {
+  // top: 0;
+  // left: 0;
+  // right: 0;
+  // bottom: 0;
+  // margin: 62px;
+  min-height: 50em;
+  min-width: 50em;
+}
+
+.map-frame {
+  border: 2px solid black;
+  height: 50em;
+}
+
+.map-dialog-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.close-button {
+  top: 1em;
+  right: 1em;
+  width: 2em;
+  height: 2em;
+  min-width: 2em;
+  min-height: 2em;
+  padding: 0px;
+  padding-left: 5px;
+  pointer-events: auto;
+}
+
+mat-button-toggle-group {
+  position: relative;
+  margin-left: 0px;
+  width: 4em;
+  right: 1em;
+  top: 1em;
+}
+
+.legend {
+  top: 8.5em;
+  left: 1em;
+  height: 14em;
+  width: 11.5em;
+}
+
+.legend-button {
+  border-radius: 2px;
+  top: 6em;
+  left: 0.8em;
+  pointer-events: auto;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  padding: 0px;
+  padding-left: 9px;
+  color: black;
+  text-decoration-color: black;
+}
+
+.legend-content {
+  flex-direction: column;
+  padding-left: 1em;
+  padding-top: 0.5em;
+  padding-right: 1em;
+}
+
+.legend-images {
+  height: 2.5em;
+}
+
+.legend-items {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 0.5em;
+  padding-top: 0.2em;
+}
+
+.legend-text {
+  padding-top: 0.5em;
+  font-size: 1em;
+}
+
+#map {
+  height: 100%;
+}
+
+.select {
+  margin-left: 1rem;
+  right: 1em;
+  bottom: 2em;
+  pointer-events: auto;
+}
+
+.help {
+  margin-left: 1rem;
+  right: 0.2em;
+  bottom: 2em;
+  pointer-events: auto;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  padding: 0px;
+}
+
+.helpIcon {
+  padding-left: 0.5em;
+  padding-bottom: 2px;
+  font-size: 1.4em;
+}
+
+.floorlevel {
+  pointer-events: auto;
+  position: relative;
+}
