@@ -1,0 +1,69 @@
+.app-nav {
+  min-height: 100%;
+}
+
+.header {
+  height: 4.5em;
+  justify-content: space-between;
+  padding-right: 1.5em;
+  padding-left: 2.5em;
+}
+
+.footer {
+  background: #ffa033;
+  height: 4em;
+  margin-top: -4em;
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 3em;
+  padding-left: 3em;
+}
+
+.logo {
+  justify-self: center;
+  width: 240px;
+  padding-top: 0.5em;
+}
+
+.toolbarButton {
+  border: none;
+  font-size: 16px;
+}
+
+.active {
+  text-decoration: underline;
+}
+
+.footer a {
+  color: white;
+}
+
+.left-side {
+  display: grid;
+  justify-content: flex-start;
+  max-width: 50%;
+  align-items: center;
+}
+
+.right-side {
+  display: flex;
+  gap: 0.5em;
+  justify-content: right;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.footer-text {
+  color: white;
+  font-size: 14px;
+  text-wrap: balance;
+}
+
+.reportbugButton {
+  background: #ffffff00 !important;
+}
+
+.privacyButton {
+  border-radius: 0;
+}

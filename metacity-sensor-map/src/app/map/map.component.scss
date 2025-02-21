@@ -5,12 +5,21 @@
   // bottom: 0;
   // margin: 62px;
   min-height: 50em;
-  min-width: 50em;
+  min-width: 80em;
 }
 
 .map-frame {
   border: 2px solid black;
-  height: 50em;
+  height: 60em;
+}
+
+.header {
+  height: 4em;
+  background-color: rgb(241, 241, 241);
+  justify-content: space-around;
+  padding-right: 1.5em;
+  padding-left: 2.5em;
+  border-bottom: 1px solid black;
 }
 
 .map-dialog-div {
@@ -38,48 +47,29 @@ mat-button-toggle-group {
   top: 1em;
 }
 
-.legend {
-  top: 8.5em;
-  left: 1em;
-  height: 14em;
-  width: 11.5em;
-}
-
-.legend-button {
-  border-radius: 2px;
-  top: 6em;
-  left: 0.8em;
-  pointer-events: auto;
-  width: 30px;
-  height: 30px;
-  min-width: 30px;
-  padding: 0px;
-  padding-left: 9px;
-  color: black;
-  text-decoration-color: black;
-}
-
-.legend-content {
-  flex-direction: column;
-  padding-left: 1em;
-  padding-top: 0.5em;
-  padding-right: 1em;
-}
-
-.legend-images {
-  height: 2.5em;
-}
-
-.legend-items {
+.sliderArea {
   display: flex;
   flex-direction: row;
-  padding-bottom: 0.5em;
-  padding-top: 0.2em;
+  align-items: center;
+  right: 4em;
+  top: 1em;
+  justify-content: space-between;
 }
 
-.legend-text {
-  padding-top: 0.5em;
-  font-size: 1em;
+.rangeSlider {
+  pointer-events: auto;
+  width: 12em;
+}
+
+.opacitySlider {
+  pointer-events: auto;
+  width: 8em;
+  left: 1em;
+}
+
+.elevationValue {
+  margin-right: 1em;
+  margin-left: 1em;
 }
 
 #map {

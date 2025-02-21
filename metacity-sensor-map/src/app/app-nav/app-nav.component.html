@@ -1,0 +1,27 @@
+<div class="app-nav">
+  <mat-toolbar class="header"> </mat-toolbar>
+  <app-map></app-map>
+</div>
+<div class="footer">
+  <section class="left-side">
+    <span class="footer-text">
+      © 2024 - Smart Campus Network | All rights reserved
+    </span>
+  </section>
+  <section class="right-side">
+    <button mat-flat-button class="reportbugButton">
+      <a fxHide fxShow.gt-xs href="https://forms.gle/dEx1HUQmKfomrHFV8"
+        >Report Bug</a
+      >
+      <mat-icon iconPositionEnd style="color: white">bug_report</mat-icon>
+    </button>
+    <a
+      mat-flat-button
+      data-cy="privacy-button"
+      routerLink="privacy"
+      class="privacyButton"
+      color="primary"
+      >Privacy</a
+    >
+  </section>
+</div>

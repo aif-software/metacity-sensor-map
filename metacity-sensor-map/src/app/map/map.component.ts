@@ -1,15 +1,28 @@
-import { Component, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ComponentRef,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import { LoggerService } from '../services/logger.service';
 import { MarkerService } from '../services/marker.service';
 import { Device } from '../models/map.interfaces';
 import * as Leaflet from 'leaflet';
+import { PopupComponent } from '../popup/popup.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
+  standalone: false,
 })
 export class MapComponent implements AfterViewInit {
+  @ViewChild('mapContainer', { static: true }) mapContainer!: any;
+  @ViewChild('popupContainer', { read: ViewContainerRef, static: true })
+  popupContainer!: ViewContainerRef;
+
   map!: Leaflet.Map;
   legendVisible = false;
   filteredFloors = new Map<string, boolean>();
@@ -20,6 +33,18 @@ export class MapComponent implements AfterViewInit {
   floorLevelOfflineLayers: { [key: string]: any } = {}; // eslint-disable-line
   offlineDevicesVisible: boolean = true;
   selectedDevices: string[] = [];
+
+  elevationRange: number[] = [-50, 50]; // Initial min/max range
+  metaCityBorder!: Leaflet.Polygon;
+  asemaKaavaOpacity: number = 0;
+  asemaKaavaVisible: boolean = false;
+  asemakaavaLayer!: Leaflet.TileLayer;
+  markerLayer: Leaflet.LayerGroup = Leaflet.layerGroup();
+
+  sensorList: any = [];
+
+  polyline: Leaflet.LatLng[] = [];
+
   readonly greyIcon = Leaflet.icon({
     iconRetinaUrl: '/marker-icon-2x.png',
     iconUrl: '/markericon_grey.png',
@@ -55,7 +80,8 @@ export class MapComponent implements AfterViewInit {
 
   constructor(
     private logger: LoggerService,
-    private markerService: MarkerService
+    private markerService: MarkerService,
+    private http: HttpClient,
   ) {}
 
   /** Initializes map */
@@ -66,6 +92,14 @@ export class MapComponent implements AfterViewInit {
       zoom: 15,
     });
 
+    this.metaCityBorder = Leaflet.polygon(this.polyline, {
+      color: 'red',
+      weight: 4,
+      fill: false,
+      dashArray: '0 20 0',
+      dashOffset: '10',
+    }).addTo(map);
+
     const tiles = Leaflet.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
@@ -73,10 +107,15 @@ export class MapComponent implements AfterViewInit {
         minZoom: 3,
         attribution:
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }
+      },
     );
-
+    this.asemakaavaLayer = Leaflet.tileLayer.wms(
+      'https://e-kartta.ouka.fi/TeklaOgcWebOpen/WMS.ashx',
+      { layers: 'Asemakaava', opacity: 0 },
+    );
     tiles.addTo(map);
+    this.asemakaavaLayer.addTo(map);
+    this.markerLayer.addTo(map);
 
     return map;
   }
@@ -84,182 +123,90 @@ export class MapComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.map = this.initMap();
 
-    this.markerService.getSensorMarkers().subscribe((res) => {
-      this.logger.log('at map ngAfterViewInit');
-      this.addFloorLayers(res);
-      this.addMarkers(res);
-      // initialize floor keys
-      this.floorKeys = Array.from(this.filteredFloors.keys()).sort((a, b) =>
-        b.localeCompare(a)
-      );
+    this.http.get('/metacityBorders.json').subscribe((data) => {
+      this.convertCoordinates(data);
+      this.metaCityBorder.setLatLngs(this.polyline);
+    });
+
+    this.http.get('/sensors.json').subscribe((data) => {
+      this.sensorList = data;
+      this.displayMarkers();
+    });
+    const rangeSlider = document.querySelector('#rangeSlider');
+
+    rangeSlider?.addEventListener('mouseenter', (e) => {
+      this.map.dragging.disable();
+    });
+
+    rangeSlider?.addEventListener('mouseleave', (e) => {
+      this.map.dragging.enable();
     });
   }
 
-  /**
-   * Generate the floor layers used to sort the devices by floor.
-   * @param devices device list fetched from backend
-   */
-  addFloorLayers(devices: Device[]) {
-    for (const device of devices) {
-      if (device.installed != null && device.location != null) {
-        if (device.status == 'online') {
-          this.filteredFloors.set(device.floorLevel, true);
-        } else if (device.status == 'offline') {
-          this.filteredOfflineFloors.set(device.floorLevel, true);
-        }
-      }
-    }
-
-    for (const key of this.filteredFloors.keys()) {
-      this.floorLevelLayers[key] = Leaflet.layerGroup();
-      this.floorLevelLayers[key].addTo(this.map);
-    }
-    for (const key of this.filteredOfflineFloors.keys()) {
-      this.floorLevelOfflineLayers[key] = Leaflet.layerGroup();
-      this.floorLevelOfflineLayers[key].addTo(this.map);
-    }
+  convertCoordinates(data: any): void {
+    data.forEach((e: any) => {
+      const latLng = new Leaflet.LatLng(e.lat, e.lng);
+      this.polyline.push(latLng);
+    });
   }
 
-  /** Generates markers. */
-  addMarkers(res: Device[]): void {
-    for (const device of res) {
-      // Removes sensors that are not installed yet but that have been added to the list
-      if (device.installed != null && device.location != null) {
-        const deviceMarker = Leaflet.marker(device.location.coordinates, {
-          // Sets the sensors icon according to the status of the sensor (selected=green, online=grey, offline=red, maintenance=yellow).
-          icon: this.markerIcon(device),
-        });
-        // Adds functionality to the marker, to be able to select them
-        deviceMarker.on('click', () => {
-          if (!this.selectedDevices.includes(device.deviceId)) {
-            deviceMarker.setIcon(this.greenIcon);
-            this.selectedDevices.push(device.deviceId);
-            this.logger.log(this.selectedDevices);
-          } else {
-            const itemIndex = this.selectedDevices.indexOf(device.deviceId);
-            const newArray = this.selectedDevices.filter(
-              (e, i) => i !== itemIndex
-            );
-            this.selectedDevices = newArray;
-            deviceMarker.setIcon(this.markerIcon(device));
-          }
-        });
-        // Adds the location tooltip when you hover over the marker, and extra info about offline sensors
-        switch (device.status) {
-          case 'online':
-            deviceMarker.bindTooltip(device.description);
-            break;
-          case 'offline':
-            deviceMarker.bindTooltip(
-              device.description +
-                ' (This sensor is offline, it may contain no data)'
-            );
-            break;
-          case 'maintenance':
-            deviceMarker.bindTooltip(
-              device.description +
-                ' (This sensor is under maintenance, it may contain no data)'
-            );
-            break;
-          default:
-            deviceMarker.bindTooltip(
-              device.description + ' (Sensor status undefined)'
-            );
-        }
-        try {
-          // Adds the marker to the map layer matching its floor level
-          if (device.status == 'online') {
-            deviceMarker.addTo(
-              this.floorLevelLayers[this.parseLevel(device.floorLevel)]
-            );
-          } else {
-            deviceMarker.addTo(
-              this.floorLevelOfflineLayers[this.parseLevel(device.floorLevel)]
-            );
-          }
-        } catch (e) {
-          this.logger.log(e);
-        }
-      }
-    }
-  }
-
-  /**
-   * @returns icon according to the status of the sensor:
-   * selected=green,
-   * online=grey,
-   * offline=red,
-   * maintenance=yellow.
-   */
-  markerIcon(
-    device: Device
-  ): Leaflet.Icon<Leaflet.IconOptions> | Leaflet.DivIcon {
-    if (this.selectedDevices.includes(device.deviceId)) {
-      return this.greenIcon;
-    }
-    switch (device.status) {
-      case 'online':
-        return this.greyIcon;
-      case 'offline':
-        return this.redIcon;
-      case 'maintenance':
-        return this.yellowIcon;
-      default:
-        return this.greyIcon;
-    }
-  }
-
-  /** Functionality to show or hide map layers for marker filtering. */
-  toggleFloorVisibility(level: string): void {
-    this.logger.log(`level ${level} toggled`);
-    const currentlyVisible = this.filteredFloors.get(level);
-
-    if (currentlyVisible) {
-      this.floorLevelLayers[level].remove();
-      if (this.floorLevelOfflineLayers[level]) {
-        this.floorLevelOfflineLayers[level].remove();
-      }
+  toggleAsemakaavaVisibility(): void {
+    if (this.asemaKaavaVisible) {
+      this.asemaKaavaOpacity = 0;
+      this.asemaKaavaVisible = !this.asemaKaavaVisible;
+      this.changeAsemakaavaOpacity();
     } else {
-      this.floorLevelLayers[level].addTo(this.map);
-      if (this.offlineDevicesVisible && this.floorLevelOfflineLayers[level]) {
-        this.floorLevelOfflineLayers[level].addTo(this.map);
-      }
-    }
-    // flip the value
-    this.filteredFloors.set(level, !this.filteredFloors.get(level));
-  }
-
-  /** Toggle offline sensors to be displayed or not. */
-  toggleOfflineSensors(): void {
-    if (this.offlineDevicesVisible) {
-      this.logger.log('Offline sensors toggled');
-      for (const i of this.floorKeys) {
-        if (this.floorLevelOfflineLayers[i]) {
-          this.floorLevelOfflineLayers[i].remove();
-          this.offlineDevicesVisible = false;
-        }
-      }
-    } else {
-      for (const i of this.floorKeys) {
-        if (this.floorLevelOfflineLayers[i] && this.filteredFloors.get(i)) {
-          this.floorLevelOfflineLayers[i].addTo(this.map);
-          this.offlineDevicesVisible = true;
-        }
-      }
+      this.asemaKaavaOpacity = 1;
+      this.asemaKaavaVisible = !this.asemaKaavaVisible;
+      this.changeAsemakaavaOpacity();
     }
   }
 
-  // Hides or shows the map legend, telling the user what the different icons mean
-  toggleLegend() {
-    this.legendVisible = !this.legendVisible;
+  changeAsemakaavaOpacity(): void {
+    this.asemakaavaLayer.setOpacity(this.asemaKaavaOpacity);
   }
 
-  /** Filters out any possible floors containing letters. */
-  parseLevel(level: string) {
-    const key = String(level).replace(/[^0-9-]/g, '');
-    if (key.length == 0) {
-      throw Error('Empty level key');
-    }
-    return key;
+  displayMarkers(): void {
+    this.markerLayer.clearLayers();
+    this.sensorList.forEach((marker: any) => {
+      if (
+        marker.location.elevation >= this.elevationRange[0] &&
+        marker.location.elevation <= this.elevationRange[1]
+      ) {
+        const coords = new Leaflet.LatLng(
+          marker.location.lat,
+          marker.location.lng,
+        );
+        const sensorMarker = Leaflet.marker(coords, {
+          icon: this.greenIcon,
+        });
+        sensorMarker.bindPopup(() => this.createPopupContent(marker));
+        this.markerLayer.addLayer(sensorMarker);
+      }
+    });
+  }
+
+  createPopupContent(content: any): HTMLElement {
+    this.popupContainer.clear(); // Clear previous components if any
+
+    const componentRef: ComponentRef<PopupComponent> =
+      this.popupContainer.createComponent(PopupComponent);
+    const locationString = `${content.location.lat} , ${content.location.lng} , ${content.location.elevation}`;
+
+    // Set data for the popup
+    componentRef.instance.id = content.id;
+    componentRef.instance.description = content.description;
+    componentRef.instance.location = locationString;
+    componentRef.instance.status = content.status;
+    componentRef.instance.sensorType = content.sensorType;
+    componentRef.instance.dataSecret = content.dataSecret;
+
+    return componentRef.location.nativeElement;
+  }
+
+  onSliderChange(): void {
+    this.logger.log(this.elevationRange);
+    this.displayMarkers();
+    //this.elevationRange = event; // Update min and max elevation
   }
 }

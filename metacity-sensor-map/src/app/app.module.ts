@@ -10,9 +10,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSliderModule } from '@angular/material/slider';
+import { PopupComponent } from './popup/popup.component';
+import { FormsModule } from '@angular/forms';
+import { AppNavComponent } from './app-nav/app-nav.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
-  declarations: [AppComponent, MapComponent],
+  declarations: [AppComponent, MapComponent, PopupComponent, AppNavComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -22,6 +27,9 @@ import { MatDividerModule } from '@angular/material/divider';
     MatButtonToggleModule,
     MatTooltipModule,
     MatDividerModule,
+    MatSliderModule,
+    FormsModule,
+    MatToolbarModule,
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent],

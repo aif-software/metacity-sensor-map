@@ -1,0 +1,90 @@
+[
+  {
+    "id": "abc123",
+    "location": { "lat": 65.051, "lng": 25.46, "elevation": 10 },
+    "status": "Online",
+    "sensorType": "temperature",
+    "description": "On a lightpole",
+    "dataSecret": true
+  },
+  {
+    "id": "abc1234",
+    "location": { "lat": 65.052, "lng": 25.46, "elevation": 5 },
+    "status": "Online",
+    "sensorType": "temperature",
+    "description": "On a lightpole",
+    "dataSecret": true
+  },
+  {
+    "id": "abc1235",
+    "location": { "lat": 65.053, "lng": 25.46, "elevation": 20 },
+    "status": "Online",
+    "sensorType": "temperature",
+    "description": "On a lightpole",
+    "dataSecret": true
+  },
+  {
+    "id": "abc1236",
+    "location": { "lat": 65.054, "lng": 25.46, "elevation": 21 },
+    "status": "Online",
+    "sensorType": "temperature",
+    "description": "On a lightpole",
+    "dataSecret": false
+  },
+  {
+    "id": "abc1237",
+    "location": { "lat": 65.055, "lng": 25.46, "elevation": 22 },
+    "status": "Online",
+    "sensorType": "temperature",
+    "description": "On a lightpole",
+    "dataSecret": false
+  },
+  {
+    "id": "abc1238",
+    "location": { "lat": 65.056, "lng": 25.46, "elevation": 23 },
+    "status": "Online",
+    "sensorType": "temperature",
+    "description": "On a lightpole",
+    "dataSecret": false
+  },
+  {
+    "id": "abc1239",
+    "location": { "lat": 65.057, "lng": 25.46, "elevation": 24 },
+    "status": "Online",
+    "sensorType": "temperature",
+    "description": "On a lightpole",
+    "dataSecret": false
+  },
+  {
+    "id": "abc12310",
+    "location": { "lat": 65.058, "lng": 25.46, "elevation": 10 },
+    "status": "Online",
+    "sensorType": "temperature",
+    "description": "On a lightpole",
+    "dataSecret": false
+  },
+  {
+    "id": "abc12311",
+    "location": { "lat": 65.059, "lng": 25.46, "elevation": 10 },
+    "status": "Online",
+    "sensorType": "temperature",
+    "description": "On a lightpole",
+    "dataSecret": false
+  },
+  {
+    "id": "abc12312",
+    "location": { "lat": 65.06, "lng": 25.46, "elevation": 10 },
+    "status": "Online",
+    "sensorType": "temperature",
+    "description": "On a lightpole",
+    "dataSecret": false
+  },
+  {
+    "id": "abc12313",
+    "location": { "lat": 65.061, "lng": 25.46, "elevation": 10 },
+    "status": "Online",
+    "sensorType": "temperature",
+    "description": "On a lightpole",
+    "dataSecret": false
+  }
+]

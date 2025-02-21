@@ -1,77 +1,68 @@
 <div class="map-container">
   <div class="map-frame">
     <div class="map-frame">
-      <div id="map">
-        <div class="leaflet-top">
-          <button
+      <mat-toolbar class="header">
+        <mat-button-toggle-group> </mat-button-toggle-group>
+        <div class="asemakaavaArea">
+          <mat-button-toggle
             mat-flat-button
-            class="legend-button"
-            (click)="toggleLegend()"
+            (change)="toggleAsemakaavaVisibility()"
           >
-            <mat-icon
-              fontSet="material-symbols-outlined"
-              fontIcon="help_outline"
-            ></mat-icon>
-          </button>
-          <mat-card class="legend" *ngIf="legendVisible">
-            <div class="legend-content">
-              <div class="legend-items">
-                <img class="legend-images" src="/markericon_grey.png" />
-                <div class="legend-text">Unselected</div>
-              </div>
-              <mat-divider></mat-divider>
-              <div class="legend-items">
-                <img class="legend-images" src="/markericon_green.png" />
-                <div class="legend-text">Selected</div>
-              </div>
-              <mat-divider></mat-divider>
-              <div class="legend-items">
-                <img class="legend-images" src="/markericon_yellow.png" />
-                <div class="legend-text">Maintenance</div>
-              </div>
-              <mat-divider></mat-divider>
-              <div class="legend-items">
-                <img class="legend-images" src="/markericon_red.png" />
-                <div class="legend-text">Offline</div>
-              </div>
-            </div>
-          </mat-card>
+            Asemakaava
+          </mat-button-toggle>
+          <mat-slider
+            *ngIf="asemaKaavaVisible"
+            #opacitySlider
+            id="opacitySlider"
+            class="opacitySlider"
+            min="0"
+            max="1"
+            step="0.1"
+            showTickMarks="true"
+          >
+            <input
+              matTooltip="{{ asemaKaavaOpacity * 100 }}%"
+              value="asemaKaavaOpacity"
+              [(ngModel)]="asemaKaavaOpacity"
+              (change)="changeAsemakaavaOpacity()"
+              matSliderThumb
+            />
+          </mat-slider>
         </div>
-        <nav class="leaflet-top leaflet-right">
-          <mat-button-toggle-group
-            name="floorButtons"
-            aria-label="floorButtons"
-            vertical="true"
-            multiple
+        <div class="sliderArea">
+          <p class="elevationValue">{{ elevationRange[0] }}</p>
+          <mat-slider
+            #rangeSlider
+            id="rangeSlider"
+            class="rangeSlider"
+            min="-50"
+            max="50"
+            step="1"
           >
-            <ng-container *ngFor="let level of this.floorKeys">
-              <mat-button-toggle
-                class="floorlevel"
-                matTooltip="Floor level"
-                matTooltipPosition="left"
-                value="{{ level }}"
-                (change)="toggleFloorVisibility(togglevalue.value)"
-                #togglevalue
-                >{{ level }}</mat-button-toggle
-              >
-            </ng-container>
-          </mat-button-toggle-group>
-        </nav>
-        <nav class="leaflet-right leaflet-bottom">
-          <div>
-            <button
-              mat-flat-button
-              matTooltip="There are some sensors that are currently offline, but they may have historical data"
-              matTooltipPosition="left"
-              class="select"
-              (click)="toggleOfflineSensors()"
-            >
-              <span *ngIf="offlineDevicesVisible"> Hide offline devices </span>
-              <span *ngIf="!offlineDevicesVisible"> Show offline devices </span>
-            </button>
-          </div>
-        </nav>
+            <input
+              matTooltip="{{ elevationRange[0] }}"
+              value="elevationRange[0]"
+              [(ngModel)]="elevationRange[0]"
+              (change)="onSliderChange()"
+              matSliderStartThumb
+            />
+            <input
+              matTooltip="{{ elevationRange[1] }}"
+              value="elevationRange[1]"
+              [(ngModel)]="elevationRange[1]"
+              (change)="onSliderChange()"
+              matSliderEndThumb
+            />
+          </mat-slider>
+          <p class="elevationValue">{{ elevationRange[1] }}</p>
+        </div>
+      </mat-toolbar>
+      <div id="map">
+        <div class="leaflet-top"></div>
+        <nav class="leaflet-top leaflet-right"></nav>
+        <nav class="leaflet-right leaflet-bottom"></nav>
       </div>
     </div>
   </div>
 </div>
+<ng-template #popupContainer></ng-template>
