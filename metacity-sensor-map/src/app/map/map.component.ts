@@ -103,10 +103,6 @@ export class MapComponent implements AfterViewInit {
       this.metaCityBorder.setLatLngs(this.polyline);
     });
 
-    // this.http.get('/bikeStations.json').subscribe((data) => {
-    // this.displayCounters(data);
-    // });
-
     this.markerService.getSensorMarkers().subscribe((res) => {
       this.filterTypeKeys(res);
       this.displayMarkers(res);
@@ -132,42 +128,6 @@ export class MapComponent implements AfterViewInit {
     });
   }
 
-  /*
-  displayCounters(data: any): void {
-    data.forEach((bikeStation: any) => {
-      this.logger.log(bikeStation);
-      this.iconName = this.markerService.getMarkerIcons(bikeStation);
-
-      const embeddedView = this.viewContainerRef.createEmbeddedView(
-        this.markerIcon,
-        { icon: this.iconName, color: this.colorClass },
-      );
-      embeddedView.detectChanges();
-
-      // Convert the view into HTML
-      const div = document.createElement('div');
-      embeddedView.rootNodes.forEach((node) => div.appendChild(node));
-
-      // Create the Leaflet divIcon
-      this.iconTemplate = Leaflet.divIcon({
-        className: '',
-        html: div.innerHTML,
-        iconSize: [25, 25],
-        iconAnchor: [12, 20],
-        tooltipAnchor: [12, -12],
-        popupAnchor: [1, -25],
-      });
-
-      const coords = new Leaflet.LatLng(bikeStation.lat, bikeStation.lon);
-
-      const sensorMarker = Leaflet.marker(coords, {
-        icon: this.iconTemplate,
-      });
-      sensorMarker.bindTooltip(bikeStation.name);
-      sensorMarker.addTo(this.map);
-    });
-  }
-*/
   /**
    * Converts coordinates to Leaflet.LatLng objects
    * @param data Coordinates as an array of json
@@ -203,12 +163,13 @@ export class MapComponent implements AfterViewInit {
   toggleDirectionLayerVisibility(): void {
     this.measuringDirectionVisible = !this.measuringDirectionVisible;
     if (this.measuringDirectionVisible) {
-      this.displayMarkers();
+      this.measuringDirectionLayerGroup.addTo(this.map);
     } else {
-      this.polygonArray.forEach((e: any) => {
-        //////////////////////////////////////////////////////////////////////////////// OPACITY KORJAA
-        this.logger.log(e);
-      });
+      this.measuringDirectionLayerGroup.remove();
+      // this.polygonArray.forEach((e: any) => {
+      //   //////////////////////////////////////////////////////////////////////////////// OPACITY KORJAA
+      //   this.logger.log(e);
+      // });
     }
   }
 
@@ -252,111 +213,113 @@ export class MapComponent implements AfterViewInit {
    * @param res list of sensors, currently provided by /sensors.json
    */
   displayMarkers(res?: Device[]): void {
-    // Clears any old markers or polygons
+    // Clears any old markers and polygons
     this.markerLayer.clearLayers();
     this.polylineLayerGroup.clearLayers();
     this.measuringDirectionLayerGroup.clearLayers();
 
+    // If sensor list is not provided, uses the previously used sensor list instead
     if (res) {
       this.sensorList = res;
     }
+
     this.sensorList.forEach((marker: any) => {
-      // Determine which icon each marker should use
-      if (this.filteredSensorTypes.get(marker.sensorType)) {
-        this.iconName = this.markerService.getMarkerIcons(marker);
+      // Determine if the marker should be displayed based on currently chosen elevation range
+      if (
+        marker.location.elevation >= this.elevationRange[0] &&
+        marker.location.elevation <= this.elevationRange[1]
+      ) {
+        // Determine which icon each marker should use
+        if (this.filteredSensorTypes.get(marker.sensorType)) {
+          this.iconName = this.markerService.getMarkerIcons(marker);
 
-        // Determine what color the icon should be based on its current status (Online, Offline, Maintenance)
-        this.colorClass = marker.status;
+          // Determine what color the icon should be based on its current status (Online, Offline, Maintenance)
+          this.colorClass = marker.status;
 
-        if (marker.crsType == 'EPSG:3067') {
-          // Convert from ETRS-TM35FIN (EPSG:3067) (Used by the finnish government and cities) to WGS84 (EPSG:4326) (Used by most online mapping softwares, including openstreetmaps)
-          marker = this.markerService.convertCrs(marker);
-        }
+          if (marker.crsType == 'EPSG:3067') {
+            // Convert from ETRS-TM35FIN (EPSG:3067) (Used by the finnish government and cities) to WGS84 (EPSG:4326) (Used by most online mapping softwares, including openstreetmaps)
+            marker = this.markerService.convertCrs(marker);
+          }
 
-        const measuringDirectionArray =
-          this.coordinateService.generateConeCoordinates(
-            marker.location.lat,
-            marker.location.lng,
-            marker.measuringDirection,
-          );
+          const measuringDirectionArray =
+            this.coordinateService.generateConeCoordinates(
+              marker.location.lat,
+              marker.location.lng,
+              marker.measuringDirection,
+            );
 
-        if (
-          marker.sensorType == 'Traffic Light' ||
-          marker.dataLatestValue != null
-        ) {
-          this.markerService
-            .getTrafficLightData(marker.id)
-            .subscribe((data: any) => {
-              var totalWait: number = 0;
+          if (
+            marker.sensorType == 'Traffic Light' ||
+            marker.dataLatestValue != null
+          ) {
+            this.markerService
+              .getTrafficLightData(marker.id)
+              .subscribe((data: any) => {
+                var totalWait: number = 0;
 
-              // Checks the wait time of each of the lanes at an intersection
-              data.values.forEach((e: any) => {
-                totalWait = totalWait + e.value;
+                // Checks the wait time of each of the lanes at an intersection
+                data.values.forEach((e: any) => {
+                  totalWait = totalWait + e.value;
+                });
+
+                // Calculates the average wait time of a traffic light
+                const totalWaitAVG = totalWait / data.values.length;
+                marker.dataLatestValue = totalWaitAVG.toFixed(0);
+
+                var measuringDirectionColor;
+
+                // Assigns color for the circle depending on wait time (seconds)
+                if (totalWaitAVG < 10) {
+                  measuringDirectionColor = 'green';
+                } else if (totalWaitAVG < 20) {
+                  measuringDirectionColor = 'yellow';
+                } else {
+                  measuringDirectionColor = 'red';
+                }
+
+                var polygon = Leaflet.polygon(measuringDirectionArray, {
+                  color: measuringDirectionColor,
+                  opacity: 1,
+                  weight: 4,
+                  fill: true,
+                }).addTo(this.measuringDirectionLayerGroup);
+                this.polygonArray.push(polygon);
               });
-
-              // Calculates the average wait time of a traffic light
-              const totalWaitAVG = totalWait / data.values.length;
-              marker.dataLatestValue = totalWaitAVG.toFixed(0);
-
-              var measuringDirectionColor;
-
-              // Assigns color for the circle depending on wait time (seconds)
-              if (totalWaitAVG < 10) {
-                measuringDirectionColor = 'green';
-              } else if (totalWaitAVG < 20) {
-                measuringDirectionColor = 'yellow';
-              } else {
-                measuringDirectionColor = 'red';
-              }
-
-              var polygon = Leaflet.polygon(measuringDirectionArray, {
-                color: measuringDirectionColor,
+          } else {
+            if (
+              marker.measuringDirection[0] != 0 &&
+              marker.measuringDirection[1] != 0
+            ) {
+              const test = Leaflet.polygon(measuringDirectionArray, {
+                color: 'blue',
                 opacity: 1,
                 weight: 4,
                 fill: true,
               }).addTo(this.measuringDirectionLayerGroup);
-              this.polygonArray.push(polygon);
-            });
-        } else {
-          if (
-            marker.measuringDirection[0] != 0 &&
-            marker.measuringDirection[1] != 0
-          ) {
-            Leaflet.polygon(measuringDirectionArray, {
-              color: 'blue',
-              opacity: 1,
-              weight: 4,
-              fill: true,
-            }).addTo(this.measuringDirectionLayerGroup);
+            }
           }
-        }
 
-        // Create an embedded view with the icon and color class
-        const embeddedView = this.viewContainerRef.createEmbeddedView(
-          this.markerIcon,
-          { icon: this.iconName, color: this.colorClass },
-        );
-        embeddedView.detectChanges();
+          // Create an embedded view with the icon and color class
+          const embeddedView = this.viewContainerRef.createEmbeddedView(
+            this.markerIcon,
+            { icon: this.iconName, color: this.colorClass },
+          );
+          embeddedView.detectChanges();
 
-        // Convert the view into HTML
-        const div = document.createElement('div');
-        embeddedView.rootNodes.forEach((node) => div.appendChild(node));
+          // Convert the view into HTML
+          const div = document.createElement('div');
+          embeddedView.rootNodes.forEach((node) => div.appendChild(node));
 
-        // Create the Leaflet divIcon
-        this.iconTemplate = Leaflet.divIcon({
-          className: '',
-          html: div.innerHTML,
-          iconSize: [25, 25],
-          iconAnchor: [12, 20],
-          tooltipAnchor: [12, -12],
-          popupAnchor: [1, -25],
-        });
+          // Create the Leaflet divIcon
+          this.iconTemplate = Leaflet.divIcon({
+            className: '',
+            html: div.innerHTML,
+            iconSize: [25, 25],
+            iconAnchor: [12, 20],
+            tooltipAnchor: [12, -12],
+            popupAnchor: [1, -25],
+          });
 
-        // Determine if the marker should be displayed based on currently chosen elevation range
-        if (
-          marker.location.elevation >= this.elevationRange[0] &&
-          marker.location.elevation <= this.elevationRange[1]
-        ) {
           const coords = new Leaflet.LatLng(
             marker.location.lat,
             marker.location.lng,
@@ -366,9 +329,9 @@ export class MapComponent implements AfterViewInit {
           });
           sensorMarker.bindPopup(() => this.createPopupContent(marker));
           this.markerLayer.addLayer(sensorMarker);
+        } else {
+          this.logger.log(marker.sensorType);
         }
-      } else {
-        this.logger.log(marker.sensorType);
       }
     });
   }

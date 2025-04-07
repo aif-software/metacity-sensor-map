@@ -299,7 +299,7 @@
     "sensorType": "Traffic Light",
     "description": "Haukiputaantie - Koskelantie",
     "dataSecret": false,
-    "measuringDirection": [250, 290],
+    "measuringDirection": [-180, 180],
     "dataLink": null,
     "dataLatestValue": null
   },
@@ -311,7 +311,7 @@
     "sensorType": "Traffic Light",
     "description": "Haukiputaantie - Elektroniikkatie",
     "dataSecret": false,
-    "measuringDirection": [260, 300],
+    "measuringDirection": [-60, 120],
     "dataLink": null,
     "dataLatestValue": null
   },
@@ -323,7 +323,7 @@
     "sensorType": "Traffic Light",
     "description": "Linnanmaantie-Pohjantie (Vt 4), länsi",
     "dataSecret": false,
-    "measuringDirection": [270, 310],
+    "measuringDirection": [-180, 180],
     "dataLink": null,
     "dataLatestValue": null
   },
@@ -335,7 +335,7 @@
     "sensorType": "Traffic Light",
     "description": "Linnanmaantie - Pohjantie (Vt 4), itä",
     "dataSecret": false,
-    "measuringDirection": [280, 320],
+    "measuringDirection": [-180, 180],
     "dataLink": null,
     "dataLatestValue": null
   },
@@ -347,7 +347,7 @@
     "sensorType": "Traffic Light",
     "description": "Alakyläntie-Syynimaantie",
     "dataSecret": false,
-    "measuringDirection": [290, 330],
+    "measuringDirection": [-180, 180],
     "dataLink": null,
     "dataLatestValue": null
   },
