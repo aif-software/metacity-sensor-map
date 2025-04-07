@@ -2,8 +2,31 @@
   <div class="map-frame">
     <div class="map-frame">
       <mat-toolbar class="header">
-        <mat-button-toggle-group> </mat-button-toggle-group>
+        <mat-button-toggle-group
+          class="toggleButtonGroup"
+          multiple
+          hideMultipleSelectionIndicator="true"
+        >
+          <ng-container *ngFor="let type of this.sensorTypes">
+            <mat-button-toggle
+              class="floorlevel"
+              matTooltip="{{ type }}"
+              matTooltipPosition="below"
+              value="{{ type }}"
+              (change)="filterSensors(filterSensorTypes.value)"
+              #filterSensorTypes
+              >{{ type }}</mat-button-toggle
+            >
+          </ng-container>
+        </mat-button-toggle-group>
         <div class="asemakaavaArea">
+          <mat-button-toggle
+            class="mittaussuuntaButton"
+            mat-flat-button
+            (change)="toggleDirectionLayerVisibility()"
+          >
+            Mittaussuunta
+          </mat-button-toggle>
           <mat-button-toggle
             mat-flat-button
             (change)="toggleAsemakaavaVisibility()"
@@ -24,37 +47,41 @@
               matTooltip="{{ asemaKaavaOpacity * 100 }}%"
               value="asemaKaavaOpacity"
               [(ngModel)]="asemaKaavaOpacity"
-              (change)="changeAsemakaavaOpacity()"
+              (input)="changeAsemakaavaOpacity()"
               matSliderThumb
             />
           </mat-slider>
         </div>
-        <div class="sliderArea">
-          <p class="elevationValue">{{ elevationRange[0] }}</p>
-          <mat-slider
-            #rangeSlider
-            id="rangeSlider"
-            class="rangeSlider"
-            min="-50"
-            max="50"
-            step="1"
-          >
-            <input
-              matTooltip="{{ elevationRange[0] }}"
-              value="elevationRange[0]"
-              [(ngModel)]="elevationRange[0]"
-              (change)="onSliderChange()"
-              matSliderStartThumb
-            />
-            <input
-              matTooltip="{{ elevationRange[1] }}"
-              value="elevationRange[1]"
-              [(ngModel)]="elevationRange[1]"
-              (change)="onSliderChange()"
-              matSliderEndThumb
-            />
-          </mat-slider>
-          <p class="elevationValue">{{ elevationRange[1] }}</p>
+        <div class="sliderHeaderArea">
+          <h1>Elevation</h1>
+          <div class="sliderArea">
+            <p class="elevationValue">{{ elevationRange[0] + "m" }}</p>
+            <mat-slider
+              #rangeSlider
+              id="rangeSlider"
+              class="rangeSlider"
+              min="-50"
+              max="50"
+              step="5"
+              showTickMarks="true"
+            >
+              <input
+                matTooltip="{{ elevationRange[0] }}"
+                value="elevationRange[0]"
+                [(ngModel)]="elevationRange[0]"
+                (input)="onSliderChange()"
+                matSliderStartThumb
+              />
+              <input
+                matTooltip="{{ elevationRange[1] }}"
+                value="elevationRange[1]"
+                [(ngModel)]="elevationRange[1]"
+                (input)="onSliderChange()"
+                matSliderEndThumb
+              />
+            </mat-slider>
+            <p class="elevationValue">{{ elevationRange[1] + "m" }}</p>
+          </div>
         </div>
       </mat-toolbar>
       <div id="map">
@@ -65,4 +92,11 @@
     </div>
   </div>
 </div>
-<ng-template #popupContainer></ng-template>
+<ng-template #popupContainer let-colorClass="color"></ng-template>
+<ng-template #markerIcon>
+  <div class="icon-container">
+    <img src="/MarkerBlankGrey.png" class="{{ colorClass }}" />
+    <mat-icon class="overlay-icon">{{ iconName }}</mat-icon>
+    <div></div>
+  </div>
+</ng-template>

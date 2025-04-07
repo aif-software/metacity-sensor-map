@@ -1,0 +1,68 @@
+[
+  {
+    "id": "QmlrZVJlbnRhbFN0YXRpb246NzIxNTU=",
+    "stationId": "72155",
+    "name": "Linnanmaan liikuntahalli",
+    "bikesAvailable": 0,
+    "spacesAvailable": 20,
+    "state": "Station on",
+    "allowDropoff": true,
+    "lat": 65.054886,
+    "lon": 25.470808
+  },
+  {
+    "id": "QmlrZVJlbnRhbFN0YXRpb246NzIxNTY=",
+    "stationId": "72156",
+    "name": "Erkki Koiso-Kanttilan katu ",
+    "bikesAvailable": 0,
+    "spacesAvailable": 28,
+    "state": "Station on",
+    "allowDropoff": true,
+    "lat": 65.058047,
+    "lon": 25.468058
+  },
+  {
+    "id": "QmlrZVJlbnRhbFN0YXRpb246NzIxNTc=",
+    "stationId": "72157",
+    "name": "Oulun yliopisto, J-ovi ",
+    "bikesAvailable": 0,
+    "spacesAvailable": 20,
+    "state": "Station on",
+    "allowDropoff": true,
+    "lat": 65.059191,
+    "lon": 25.463362
+  },
+  {
+    "id": "QmlrZVJlbnRhbFN0YXRpb246NzIxNTg=",
+    "stationId": "72158",
+    "name": "Kaijonharju",
+    "bikesAvailable": 0,
+    "spacesAvailable": 20,
+    "state": "Station on",
+    "allowDropoff": true,
+    "lat": 65.059815,
+    "lon": 25.478604
+  },
+  {
+    "id": "QmlrZVJlbnRhbFN0YXRpb246NzIxNTk=",
+    "stationId": "72159",
+    "name": "Oulun normaalikoulu ja lukio",
+    "bikesAvailable": 0,
+    "spacesAvailable": 22,
+    "state": "Station on",
+    "allowDropoff": true,
+    "lat": 65.063185,
+    "lon": 25.471024
+  },
+  {
+    "id": "QmlrZVJlbnRhbFN0YXRpb246NzIxNjA=",
+    "stationId": "72160",
+    "name": "Elektroniikkatie",
+    "bikesAvailable": 0,
+    "spacesAvailable": 14,
+    "state": "Station on",
+    "allowDropoff": true,
+    "lat": 65.060065,
+    "lon": 25.439965
+  }
+]

@@ -17,6 +17,7 @@
   height: 4em;
   background-color: rgb(241, 241, 241);
   justify-content: space-around;
+  align-items: center;
   padding-right: 1.5em;
   padding-left: 2.5em;
   border-bottom: 1px solid black;
@@ -42,23 +43,36 @@
 mat-button-toggle-group {
   position: relative;
   margin-left: 0px;
-  width: 4em;
-  right: 1em;
-  top: 1em;
+}
+
+.sliderHeaderArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sliderArea {
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 20em;
   right: 4em;
   top: 1em;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .rangeSlider {
   pointer-events: auto;
   width: 12em;
+  position: absolute;
+}
+
+.asemakaavaArea {
+  width: 20em;
+}
+
+.mittaussuuntaButton {
+  right: 3em;
 }
 
 .opacitySlider {
@@ -68,8 +82,8 @@ mat-button-toggle-group {
 }
 
 .elevationValue {
-  margin-right: 1em;
-  margin-left: 1em;
+  margin-right: 7em;
+  margin-left: 7em;
 }
 
 #map {
@@ -103,4 +117,36 @@ mat-button-toggle-group {
 .floorlevel {
   pointer-events: auto;
   position: relative;
+}
+
+.icon-container {
+  position: relative; /* Makes this the reference for absolute positioning */
+  width: 25px; /* Ensure it matches the image width */
+  height: 25px; /* Ensure it matches the image height */
+}
+
+.icon-container img {
+  display: block; /* Ensures no extra space around the image */
+  width: 100%;
+  height: 100%;
+}
+
+.overlay-icon {
+  position: absolute;
+  top: 60%; /* Move to center */
+  left: 68%;
+  transform: translate(-50%, -50%); /* Center perfectly */
+  font-size: 15px; /* Adjust icon size */
+}
+
+.Offline {
+  filter: sepia(1) saturate(10) hue-rotate(300deg) brightness(0.7) contrast(3.2);
+}
+
+.Online {
+  filter: sepia(1) saturate(10) hue-rotate(52deg);
+}
+
+.Maintenance {
+  filter: sepia(1) saturate(3) hue-rotate(0deg);
 }

@@ -1,13 +1,48 @@
 <div class="popupContent">
-  <h3>{{ "Id: " + id }}</h3>
+  <p>
+    <b>{{ "Id: " + id }}</b>
+  </p>
   <mat-divider></mat-divider>
-  <p>{{ "description: " + description }}</p>
+  <p>
+    <b>{{ "Description: " + description }}</b>
+  </p>
   <mat-divider></mat-divider>
-  <p>{{ "location: " + location }}</p>
+  <p>
+    <b>{{ "Location: " + location }}</b>
+  </p>
   <mat-divider></mat-divider>
-  <p>{{ "status: " + status }}</p>
+  <p>
+    <b>{{ "Elevation: " + elevation + "m" }}</b>
+  </p>
   <mat-divider></mat-divider>
-  <p>{{ "sensorType: " + sensorType }}</p>
+  <p>
+    <b>{{ "Status: " + status }}</b>
+  </p>
   <mat-divider></mat-divider>
-  <p>{{ "Is data secret?: " + dataSecret }}</p>
+  <p>
+    <b>{{ "Sensor Type: " + sensorType }}</b>
+  </p>
+  <mat-divider></mat-divider>
+  <p>
+    <b>{{ "Is data secret?: " + dataSecret }}</b>
+  </p>
+  <mat-divider *ngIf="dataValue"></mat-divider>
+  <p *ngIf="dataValue">
+    <b>{{ "Latest value: " + dataValue }}</b>
+  </p>
 </div>
+<!--
+<h3>{{ "Id: " + id }}</h3>
+  <mat-divider></mat-divider>
+  <p>{{ "Description: " + description }}</p>
+  <mat-divider></mat-divider>
+  <p>{{ "Location: " + location }}</p>
+  <mat-divider></mat-divider>
+  <p>{{ "Status: " + status }}</p>
+  <mat-divider></mat-divider>
+  <p><b>{{ "Sensor Type: " + sensorType }}</b></p>
+  <mat-divider></mat-divider>
+  <p>
+    <b>{{ "Is data secret?: " + dataSecret }}</b>
+  </p>
+-->

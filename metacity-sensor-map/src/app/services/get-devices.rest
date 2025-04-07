@@ -1,0 +1,7 @@
+POST https://api.oulunliikenne.fi/proxy/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query": "query GetAllEcoCounterSites { ecoCounterSites { id siteId name domain userType timezone interval sens channels { id siteId name domain userType timezone interval sens lat lon } } }"}'
+
+POST https://api.oulunliikenne.fi/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "ottoKalliokoski", "password": "verySecurePassword"}'

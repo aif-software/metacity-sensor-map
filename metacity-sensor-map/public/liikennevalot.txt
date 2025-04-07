@@ -1,0 +1,11 @@
+HA01LV;Haukiputaantie (Mt 847)-Haukiväylä (Mt 848);7228019;422565
+OULU150;Haukiputaantie - Koskelantie;7215966;426058
+OULU152;Haukiputaantie - Elektroniikkatie;7215616;426686
+OULU153;Linnanmaantie-Pohjantie (Vt 4), länsi;7215512;426905
+OULU154;Linnanmaantie - Pohjantie (Vt 4), itä;7215534;427185
+OULU165;Alakyläntie-Syynimaantie;7214881;428361
+OULU166;Alakyläntie - Linnanmaantie;7215517;428305
+OULU167;Linnanmaantie - Yliopistokatu;7215532;428117
+OULU168;Alakyläntie - Kalevalantie;7215877;428542
+OULU175;Raitotie-Pöllöntie;7216617;429616
+OULU176;Raitotie-Kalikkatie;7216831;429171
