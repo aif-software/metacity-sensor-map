@@ -257,7 +257,7 @@
     "location": { "lat": 65.061, "lng": 25.437, "elevation": -10 },
     "status": "Offline",
     "sensorType": "humidity",
-    "description": "Above a traffic light",
+    "description": "Above a TrafficLight",
     "dataSecret": false,
     "measuringDirection": [210, 250],
     "dataLink": null,
@@ -273,7 +273,7 @@
     },
     "status": "Offline",
     "sensorType": "humidity",
-    "description": "Above a traffic light",
+    "description": "Above a TrafficLight",
     "dataSecret": false,
     "measuringDirection": [220, 260],
     "dataLink": null,
@@ -284,11 +284,11 @@
     "crsType": "EPSG:3067",
     "location": { "lat": 7228019, "lng": 422565, "elevation": 5 },
     "status": "Online",
-    "sensorType": "Traffic Light",
+    "sensorType": "TrafficLight",
     "description": "Haukiputaantie (Mt 847)-Haukiväylä (Mt 848)",
     "dataSecret": false,
     "measuringDirection": [240, 280],
-    "dataLink": null,
+    "dataLink": "https://api.oulunliikenne.fi/tpm/kpi/traffic-volume/HA01LV",
     "dataLatestValue": null
   },
   {
@@ -296,11 +296,11 @@
     "crsType": "EPSG:3067",
     "location": { "lat": 7215966, "lng": 426058, "elevation": 5 },
     "status": "Online",
-    "sensorType": "Traffic Light",
+    "sensorType": "TrafficLight",
     "description": "Haukiputaantie - Koskelantie",
     "dataSecret": false,
-    "measuringDirection": [-180, 180],
-    "dataLink": null,
+    "measuringDirection": [320, 90],
+    "dataLink": "https://api.oulunliikenne.fi/tpm/kpi/traffic-volume/OULU150",
     "dataLatestValue": null
   },
   {
@@ -308,11 +308,11 @@
     "crsType": "EPSG:3067",
     "location": { "lat": 7215616, "lng": 426686, "elevation": 5 },
     "status": "Online",
-    "sensorType": "Traffic Light",
+    "sensorType": "TrafficLight",
     "description": "Haukiputaantie - Elektroniikkatie",
     "dataSecret": false,
     "measuringDirection": [-60, 120],
-    "dataLink": null,
+    "dataLink": "https://api.oulunliikenne.fi/tpm/kpi/traffic-volume/OULU152",
     "dataLatestValue": null
   },
   {
@@ -320,11 +320,11 @@
     "crsType": "EPSG:3067",
     "location": { "lat": 7215512, "lng": 426905, "elevation": 5 },
     "status": "Online",
-    "sensorType": "Traffic Light",
+    "sensorType": "TrafficLight",
     "description": "Linnanmaantie-Pohjantie (Vt 4), länsi",
     "dataSecret": false,
     "measuringDirection": [-180, 180],
-    "dataLink": null,
+    "dataLink": "https://api.oulunliikenne.fi/tpm/kpi/traffic-volume/OULU153",
     "dataLatestValue": null
   },
   {
@@ -332,11 +332,11 @@
     "crsType": "EPSG:3067",
     "location": { "lat": 7215534, "lng": 427185, "elevation": 5 },
     "status": "Online",
-    "sensorType": "Traffic Light",
+    "sensorType": "TrafficLight",
     "description": "Linnanmaantie - Pohjantie (Vt 4), itä",
     "dataSecret": false,
     "measuringDirection": [-180, 180],
-    "dataLink": null,
+    "dataLink": "https://api.oulunliikenne.fi/tpm/kpi/traffic-volume/OULU154",
     "dataLatestValue": null
   },
   {
@@ -344,11 +344,11 @@
     "crsType": "EPSG:3067",
     "location": { "lat": 7214881, "lng": 428361, "elevation": 5 },
     "status": "Online",
-    "sensorType": "Traffic Light",
+    "sensorType": "TrafficLight",
     "description": "Alakyläntie-Syynimaantie",
     "dataSecret": false,
     "measuringDirection": [-180, 180],
-    "dataLink": null,
+    "dataLink": "https://api.oulunliikenne.fi/tpm/kpi/traffic-volume/OULU165",
     "dataLatestValue": null
   },
   {
@@ -356,11 +356,11 @@
     "crsType": "EPSG:3067",
     "location": { "lat": 7215517, "lng": 428305, "elevation": 5 },
     "status": "Online",
-    "sensorType": "Traffic Light",
+    "sensorType": "TrafficLight",
     "description": "Alakyläntie - Linnanmaantie",
     "dataSecret": false,
     "measuringDirection": [-180, 20],
-    "dataLink": null,
+    "dataLink": "https://api.oulunliikenne.fi/tpm/kpi/traffic-volume/OULU166",
     "dataLatestValue": null
   },
   {
@@ -368,11 +368,11 @@
     "crsType": "EPSG:3067",
     "location": { "lat": 7215532, "lng": 428117, "elevation": 5 },
     "status": "Online",
-    "sensorType": "Traffic Light",
+    "sensorType": "TrafficLight",
     "description": "Linnanmaantie - Yliopistokatu",
     "dataSecret": false,
     "measuringDirection": [-110, 110],
-    "dataLink": null,
+    "dataLink": "https://api.oulunliikenne.fi/tpm/kpi/traffic-volume/OULU167",
     "dataLatestValue": null
   },
   {
@@ -380,11 +380,11 @@
     "crsType": "EPSG:3067",
     "location": { "lat": 7215877, "lng": 428542, "elevation": 5 },
     "status": "Online",
-    "sensorType": "Traffic Light",
+    "sensorType": "TrafficLight",
     "description": "Alakyläntie - Kalevalantie",
     "dataSecret": false,
     "measuringDirection": [-140, 80],
-    "dataLink": null,
+    "dataLink": "https://api.oulunliikenne.fi/tpm/kpi/traffic-volume/OULU168",
     "dataLatestValue": null
   },
   {
@@ -392,11 +392,11 @@
     "crsType": "EPSG:3067",
     "location": { "lat": 7216617, "lng": 429616, "elevation": 5 },
     "status": "Online",
-    "sensorType": "Traffic Light",
+    "sensorType": "TrafficLight",
     "description": "Raitotie-Pöllöntie",
     "dataSecret": false,
     "measuringDirection": [-80, 140],
-    "dataLink": null,
+    "dataLink": "https://api.oulunliikenne.fi/tpm/kpi/traffic-volume/OULU175",
     "dataLatestValue": null
   },
   {
@@ -404,11 +404,11 @@
     "crsType": "EPSG:3067",
     "location": { "lat": 7216831, "lng": 429171, "elevation": 5 },
     "status": "Online",
-    "sensorType": "Traffic Light",
+    "sensorType": "TrafficLight",
     "description": "Raitotie-Kalikkatie",
     "dataSecret": false,
     "measuringDirection": [-85, 140],
-    "dataLink": null,
+    "dataLink": "https://api.oulunliikenne.fi/tpm/kpi/traffic-volume/OULU176",
     "dataLatestValue": null
   },
   {
@@ -420,7 +420,7 @@
     "description": "PP_A29_A30__A",
     "dataSecret": false,
     "measuringDirection": [340, 20],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -432,7 +432,7 @@
     "description": "PP_B29_B30__B",
     "dataSecret": false,
     "measuringDirection": [350, 30],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -444,7 +444,7 @@
     "description": "pp_a29_a30",
     "dataSecret": false,
     "measuringDirection": [0, 40],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -456,7 +456,7 @@
     "description": "pp_b29_b30",
     "dataSecret": false,
     "measuringDirection": [0, 50],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -480,7 +480,7 @@
     "description": "PP2_PP1",
     "dataSecret": false,
     "measuringDirection": [0, 70],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -492,7 +492,7 @@
     "description": "PP5_PP6",
     "dataSecret": false,
     "measuringDirection": [0, 80],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -504,7 +504,7 @@
     "description": "PP6_PP5",
     "dataSecret": false,
     "measuringDirection": [0, 90],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -512,11 +512,11 @@
     "crsType": "EPSG:4326",
     "location": { "lat": 65.054886, "lng": 25.470808, "elevation": 0 },
     "status": "Online",
-    "sensorType": "Bike Rental",
+    "sensorType": "BikeRental",
     "description": "Linnanmaan liikuntahalli",
     "dataSecret": false,
     "measuringDirection": [-180, 180],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -524,11 +524,11 @@
     "crsType": "EPSG:4326",
     "location": { "lat": 65.058047, "lng": 25.468058, "elevation": 0 },
     "status": "Online",
-    "sensorType": "Bike Rental",
+    "sensorType": "BikeRental",
     "description": "Erkki Koiso-Kanttilan katu",
     "dataSecret": false,
     "measuringDirection": [-180, 180],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -536,11 +536,11 @@
     "crsType": "EPSG:4326",
     "location": { "lat": 65.059191, "lng": 25.463362, "elevation": 0 },
     "status": "Online",
-    "sensorType": "Bike Rental",
+    "sensorType": "BikeRental",
     "description": "Oulun yliopisto, J-ovi",
     "dataSecret": false,
     "measuringDirection": [-180, 180],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -548,11 +548,11 @@
     "crsType": "EPSG:4326",
     "location": { "lat": 65.059815, "lng": 25.478604, "elevation": 0 },
     "status": "Online",
-    "sensorType": "Bike Rental",
+    "sensorType": "BikeRental",
     "description": "Kaijonharju",
     "dataSecret": false,
     "measuringDirection": [-180, 180],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -560,11 +560,11 @@
     "crsType": "EPSG:4326",
     "location": { "lat": 65.063185, "lng": 25.471024, "elevation": 0 },
     "status": "Online",
-    "sensorType": "Bike Rental",
+    "sensorType": "BikeRental",
     "description": "Oulun normaalikoulu ja lukio",
     "dataSecret": false,
     "measuringDirection": [-180, 180],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   },
   {
@@ -572,11 +572,11 @@
     "crsType": "EPSG:4326",
     "location": { "lat": 65.060065, "lng": 25.439965, "elevation": 0 },
     "status": "Online",
-    "sensorType": "Bike Rental",
+    "sensorType": "BikeRental",
     "description": "Elektroniikkatie",
     "dataSecret": false,
     "measuringDirection": [-180, 180],
-    "dataLink": null,
+    "dataLink": "https://wp.oulunliikenne.fi/avoin-data/pyorailykavely/graphql-rajapinnat/#py%C3%B6r%C3%A4ily-ja-k%C3%A4vely-m%C3%A4%C3%A4r%C3%A4t",
     "dataLatestValue": null
   }
 ]
