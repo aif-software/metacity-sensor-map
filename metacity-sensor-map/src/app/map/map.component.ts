@@ -35,18 +35,19 @@ export class MapComponent implements AfterViewInit {
   iconName: string = '';
   elevationRange: number[] = [-50, 50]; // Initial min/max range
   metaCityBorder!: Leaflet.Polygon;
-  asemaKaavaOpacity: number = 0;
-  asemaKaavaVisible: boolean = false;
-  asemakaavaLayer!: Leaflet.TileLayer;
-  measuringDirectionLayerGroup!: Leaflet.LayerGroup;
+  cityPlanOpacity: number = 0;
+  cityPlanVisible: boolean = false;
+  cityPlanLayer!: Leaflet.TileLayer;
   measuringDirectionVisible: boolean = true;
   iconTemplate!: Leaflet.DivIcon;
   sensorList: any = [];
   polyline: Leaflet.LatLng[] = [];
-  markerLayer: Leaflet.LayerGroup = Leaflet.layerGroup();
-  polylineLayerGroup!: Leaflet.LayerGroup;
   sensorData: any;
   polygonArray: Leaflet.Polygon[] = [];
+
+  sensorTypeLayers: { [key: string]: any } = {}; // eslint-disable-line
+  measuringDirectionLayers: { [key: string]: any } = {}; // eslint-disable-line
+
   constructor(
     private logger: LoggerService,
     private markerService: MarkerService,
@@ -80,17 +81,12 @@ export class MapComponent implements AfterViewInit {
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       },
     );
-    this.asemakaavaLayer = Leaflet.tileLayer.wms(
+    this.cityPlanLayer = Leaflet.tileLayer.wms(
       'https://e-kartta.ouka.fi/TeklaOgcWebOpen/WMS.ashx',
       { layers: 'Asemakaava', opacity: 0 },
     );
-    this.polylineLayerGroup = Leaflet.layerGroup();
-    this.measuringDirectionLayerGroup = Leaflet.layerGroup();
     tiles.addTo(map);
-    this.asemakaavaLayer.addTo(map);
-    this.markerLayer.addTo(map);
-    this.polylineLayerGroup.addTo(map);
-    this.measuringDirectionLayerGroup.addTo(map);
+    this.cityPlanLayer.addTo(map);
 
     return map;
   }
@@ -105,8 +101,8 @@ export class MapComponent implements AfterViewInit {
 
     this.markerService.getSensorMarkers().subscribe((res) => {
       this.filterTypeKeys(res);
+      this.generateSensorLayers(res);
       this.displayMarkers(res);
-      this.markerLayer.addTo(this.map);
     });
 
     this.map.on('click', function (e) {
@@ -129,6 +125,27 @@ export class MapComponent implements AfterViewInit {
   }
 
   /**
+   * Generate the sensor layers used to sort the devices by sensor type.
+   * @param devices device list fetched from backend
+   */
+  generateSensorLayers(res: Device[]) {
+    res.forEach((marker: any) => {
+      this.filteredSensorTypes.set(marker.sensorType, true);
+      if (!this.sensorTypes.includes(marker.sensorType)) {
+        this.sensorTypes.push(marker.sensorType);
+      }
+    });
+
+    for (const key of this.filteredSensorTypes.keys()) {
+      this.sensorTypeLayers[key] = Leaflet.layerGroup();
+      this.sensorTypeLayers[key].addTo(this.map);
+
+      this.measuringDirectionLayers[key] = Leaflet.layerGroup();
+      this.measuringDirectionLayers[key].addTo(this.map);
+    }
+  }
+
+  /**
    * Converts coordinates to Leaflet.LatLng objects
    * @param data Coordinates as an array of json
    * @returns array of Leaflet.LatLng objects
@@ -143,56 +160,41 @@ export class MapComponent implements AfterViewInit {
   }
 
   /**
-   * Toggles the visibility of the asemakaava slider
+   * Toggles the visibility of the cityPlan slider
    */
-  toggleAsemakaavaVisibility(): void {
-    if (this.asemaKaavaVisible) {
-      this.asemaKaavaOpacity = 0;
-      this.asemaKaavaVisible = !this.asemaKaavaVisible;
-      this.asemakaavaLayer.setOpacity(this.asemaKaavaOpacity);
+  togglecityPlanVisibility(): void {
+    if (this.cityPlanVisible) {
+      this.cityPlanOpacity = 0;
+      this.cityPlanVisible = !this.cityPlanVisible;
+      this.cityPlanLayer.setOpacity(this.cityPlanOpacity);
     } else {
-      this.asemaKaavaOpacity = 1;
-      this.asemaKaavaVisible = !this.asemaKaavaVisible;
-      this.asemakaavaLayer.setOpacity(this.asemaKaavaOpacity);
+      this.cityPlanOpacity = 1;
+      this.cityPlanVisible = !this.cityPlanVisible;
+      this.cityPlanLayer.setOpacity(this.cityPlanOpacity);
     }
   }
 
   /**
-   * Toggles the visibility of the asemakaava slider
+   * Toggles the visibility of the cityPlan slider
    */
   toggleDirectionLayerVisibility(): void {
     this.measuringDirectionVisible = !this.measuringDirectionVisible;
     if (this.measuringDirectionVisible) {
-      this.measuringDirectionLayerGroup.addTo(this.map);
+      for (const key of this.filteredSensorTypes.keys()) {
+        this.measuringDirectionLayers[key].addTo(this.map);
+      }
     } else {
-      this.measuringDirectionLayerGroup.remove();
-      // this.polygonArray.forEach((e: any) => {
-      //   //////////////////////////////////////////////////////////////////////////////// OPACITY KORJAA
-      //   this.logger.log(e);
-      // });
+      for (const key of this.filteredSensorTypes.keys()) {
+        this.measuringDirectionLayers[key].remove();
+      }
     }
   }
 
   /**
-   * Toggles the visibility of the asemakaava slider
+   * Changes the opacity of the cityPlan layer
    */
-  toggleLayerVisibility(layer: string): void {
-    var currentLayer;
-    switch (layer) {
-      case 'asemakaava':
-        currentLayer = this.asemakaavaLayer;
-        break;
-      case 'mittaussuunta':
-        currentLayer = this.measuringDirectionLayerGroup;
-    }
-    this.logger.log(currentLayer?.options);
-  }
-
-  /**
-   * Changes the opacity of the asemakaava layer
-   */
-  changeAsemakaavaOpacity(): void {
-    this.asemakaavaLayer.setOpacity(this.asemaKaavaOpacity);
+  changecityPlanOpacity(): void {
+    this.cityPlanLayer.setOpacity(this.cityPlanOpacity);
   }
 
   /**
@@ -214,9 +216,10 @@ export class MapComponent implements AfterViewInit {
    */
   displayMarkers(res?: Device[]): void {
     // Clears any old markers and polygons
-    this.markerLayer.clearLayers();
-    this.polylineLayerGroup.clearLayers();
-    this.measuringDirectionLayerGroup.clearLayers();
+    for (const key of this.filteredSensorTypes.keys()) {
+      this.sensorTypeLayers[key].clearLayers();
+      this.measuringDirectionLayers[key].clearLayers();
+    }
 
     // If sensor list is not provided, uses the previously used sensor list instead
     if (res) {
@@ -249,7 +252,7 @@ export class MapComponent implements AfterViewInit {
             );
 
           if (
-            marker.sensorType == 'Traffic Light' ||
+            marker.sensorType == 'TrafficLight' ||
             marker.dataLatestValue != null
           ) {
             this.markerService
@@ -282,7 +285,7 @@ export class MapComponent implements AfterViewInit {
                   opacity: 1,
                   weight: 4,
                   fill: true,
-                }).addTo(this.measuringDirectionLayerGroup);
+                }).addTo(this.measuringDirectionLayers[marker.sensorType]);
                 this.polygonArray.push(polygon);
               });
           } else {
@@ -290,12 +293,12 @@ export class MapComponent implements AfterViewInit {
               marker.measuringDirection[0] != 0 &&
               marker.measuringDirection[1] != 0
             ) {
-              const test = Leaflet.polygon(measuringDirectionArray, {
+              Leaflet.polygon(measuringDirectionArray, {
                 color: 'blue',
                 opacity: 1,
                 weight: 4,
                 fill: true,
-              }).addTo(this.measuringDirectionLayerGroup);
+              }).addTo(this.measuringDirectionLayers[marker.sensorType]);
             }
           }
 
@@ -328,7 +331,8 @@ export class MapComponent implements AfterViewInit {
             icon: this.iconTemplate,
           });
           sensorMarker.bindPopup(() => this.createPopupContent(marker));
-          this.markerLayer.addLayer(sensorMarker);
+
+          sensorMarker.addTo(this.sensorTypeLayers[marker.sensorType]);
         } else {
           this.logger.log(marker.sensorType);
         }
@@ -342,7 +346,13 @@ export class MapComponent implements AfterViewInit {
    */
   filterSensors(sensor: string): void {
     this.filteredSensorTypes.set(sensor, !this.filteredSensorTypes.get(sensor));
-    this.displayMarkers();
+    if (!this.filteredSensorTypes.get(sensor)) {
+      this.sensorTypeLayers[sensor].remove();
+      this.measuringDirectionLayers[sensor].remove();
+    } else {
+      this.sensorTypeLayers[sensor].addTo(this.map);
+      this.measuringDirectionLayers[sensor].addTo(this.map);
+    }
   }
 
   /**
@@ -367,6 +377,7 @@ export class MapComponent implements AfterViewInit {
     componentRef.instance.status = content.status;
     componentRef.instance.sensorType = content.sensorType;
     componentRef.instance.dataSecret = content.dataSecret;
+    componentRef.instance.linkToData = content.dataLink;
     componentRef.instance.dataValue = content.dataLatestValue;
 
     return componentRef.location.nativeElement;
