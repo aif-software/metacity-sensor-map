@@ -11,6 +11,8 @@ interface Device {
 
 interface Location {
   coordinates: [number, number, number?];
+  path?: [{ lat: number; lng: number }];
+  area?: [{ lat: number; lng: number }];
   _id: string;
   type: string;
 }
