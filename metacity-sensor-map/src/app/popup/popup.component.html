@@ -30,6 +30,12 @@
   <p *ngIf="dataValue">
     <b>{{ "Latest value: " + dataValue }}</b>
   </p>
+  <mat-divider *ngIf="linkToData"></mat-divider>
+  <div class="buttonArea">
+    <button class="linkButton" mat-flat-button *ngIf="linkToData">
+      <a target="_blank" class="link" href="{{ linkToData }}">{{ id }}</a>
+    </button>
+  </div>
 </div>
 <!--
 <h3>{{ "Id: " + id }}</h3>
