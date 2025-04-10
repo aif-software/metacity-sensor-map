@@ -1,69 +1,84 @@
-.app-nav {
-  min-height: 100%;
-}
-
 .header {
-  height: 4.5em;
-  justify-content: space-between;
+  height: 4em;
+  background-color: rgb(241, 241, 241);
+  justify-content: space-around;
+  align-items: center;
   padding-right: 1.5em;
   padding-left: 2.5em;
+  border-bottom: 1px solid black;
 }
 
-.footer {
-  background: #ffa033;
-  height: 4em;
-  margin-top: -4em;
+mat-button-toggle-group {
+  position: relative;
+  margin-left: 0px;
+}
+
+.sliderHeaderArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sliderArea {
+  display: flex;
   flex-direction: row;
-  display: flex;
-  justify-content: space-between;
-  padding-right: 3em;
-  padding-left: 3em;
-}
-
-.logo {
-  justify-self: center;
-  width: 240px;
-  padding-top: 0.5em;
-}
-
-.toolbarButton {
-  border: none;
-  font-size: 16px;
-}
-
-.active {
-  text-decoration: underline;
-}
-
-.footer a {
-  color: white;
-}
-
-.left-side {
-  display: grid;
-  justify-content: flex-start;
-  max-width: 50%;
   align-items: center;
+  width: 20em;
+  right: 4em;
+  top: 1em;
+  justify-content: center;
 }
 
-.right-side {
-  display: flex;
-  gap: 0.5em;
-  justify-content: right;
-  flex-wrap: nowrap;
-  align-items: center;
+.rangeSlider {
+  pointer-events: auto;
+  width: 12em;
+  position: absolute;
 }
 
-.footer-text {
-  color: white;
-  font-size: 14px;
-  text-wrap: balance;
+.cityPlanArea {
+  width: 20em;
 }
 
-.reportbugButton {
-  background: #ffffff00 !important;
+.mittaussuuntaButton {
+  right: 3em;
 }
 
-.privacyButton {
-  border-radius: 0;
+.opacitySlider {
+  pointer-events: auto;
+  width: 8em;
+  left: 1em;
+}
+
+.elevationValue {
+  margin-right: 7em;
+  margin-left: 7em;
+}
+
+.select {
+  margin-left: 1rem;
+  right: 1em;
+  bottom: 2em;
+  pointer-events: auto;
+}
+
+.help {
+  margin-left: 1rem;
+  right: 0.2em;
+  bottom: 2em;
+  pointer-events: auto;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  padding: 0px;
+}
+
+.helpIcon {
+  padding-left: 0.5em;
+  padding-bottom: 2px;
+  font-size: 1.4em;
+}
+
+.floorlevel {
+  pointer-events: auto;
+  position: relative;
 }
