@@ -19,7 +19,7 @@
             >
           </ng-container>
         </mat-button-toggle-group>
-        <div class="asemakaavaArea">
+        <div class="cityPlanArea">
           <mat-button-toggle
             class="mittaussuuntaButton"
             mat-flat-button
@@ -29,12 +29,12 @@
           </mat-button-toggle>
           <mat-button-toggle
             mat-flat-button
-            (change)="toggleAsemakaavaVisibility()"
+            (change)="togglecityPlanVisibility()"
           >
             Asemakaava
           </mat-button-toggle>
           <mat-slider
-            *ngIf="asemaKaavaVisible"
+            *ngIf="cityPlanVisible"
             #opacitySlider
             id="opacitySlider"
             class="opacitySlider"
@@ -44,10 +44,10 @@
             showTickMarks="true"
           >
             <input
-              matTooltip="{{ asemaKaavaOpacity * 100 }}%"
-              value="asemaKaavaOpacity"
-              [(ngModel)]="asemaKaavaOpacity"
-              (input)="changeAsemakaavaOpacity()"
+              matTooltip="{{ cityPlanOpacity * 100 }}%"
+              value="cityPlanOpacity"
+              [(ngModel)]="cityPlanOpacity"
+              (input)="changecityPlanOpacity()"
               matSliderThumb
             />
           </mat-slider>
@@ -65,18 +65,19 @@
               step="5"
               showTickMarks="true"
             >
+              <!-- If you want realtime updates on sliders, swap (change) to (input)-->
               <input
                 matTooltip="{{ elevationRange[0] }}"
                 value="elevationRange[0]"
                 [(ngModel)]="elevationRange[0]"
-                (input)="onSliderChange()"
+                (change)="onSliderChange()"
                 matSliderStartThumb
               />
               <input
                 matTooltip="{{ elevationRange[1] }}"
                 value="elevationRange[1]"
                 [(ngModel)]="elevationRange[1]"
-                (input)="onSliderChange()"
+                (change)="onSliderChange()"
                 matSliderEndThumb
               />
             </mat-slider>
@@ -97,6 +98,5 @@
   <div class="icon-container">
     <img src="/MarkerBlankGrey.png" class="{{ colorClass }}" />
     <mat-icon class="overlay-icon">{{ iconName }}</mat-icon>
-    <div></div>
   </div>
 </ng-template>
