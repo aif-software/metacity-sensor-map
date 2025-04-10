@@ -19,13 +19,24 @@
     </mat-button-toggle-group>
     <div class="cityPlanArea">
       <mat-button-toggle
-        class="mittaussuuntaButton"
+        class="toggleButton"
         mat-flat-button
         (change)="toggleDirectionLayerVisibility()"
       >
         Mittaussuunta
       </mat-button-toggle>
-      <mat-button-toggle mat-flat-button (change)="togglecityPlanVisibility()">
+      <mat-button-toggle
+        class="toggleButton"
+        mat-flat-button
+        (change)="toggleFlightPathVisibility()"
+      >
+        Lentoreitit
+      </mat-button-toggle>
+      <mat-button-toggle
+        class="toggleButton"
+        mat-flat-button
+        (change)="togglecityPlanVisibility()"
+      >
         Asemakaava
       </mat-button-toggle>
       <mat-slider
