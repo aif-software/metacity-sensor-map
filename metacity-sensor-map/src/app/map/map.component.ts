@@ -5,6 +5,7 @@ import {
   ViewChild,
   ViewContainerRef,
   TemplateRef,
+  Input,
 } from '@angular/core';
 import { LoggerService } from '../services/logger.service';
 import { MarkerService } from '../services/marker.service';
@@ -14,6 +15,7 @@ import { PopupComponent } from '../popup/popup.component';
 import { HttpClient } from '@angular/common/http';
 import { CoordinateService } from '../services/coordinate.service';
 
+@Input({ required: true })
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -21,6 +23,8 @@ import { CoordinateService } from '../services/coordinate.service';
   standalone: false,
 })
 export class MapComponent implements AfterViewInit {
+  @Input() elevationRange: number[] = [-50, 50]; // Initial min/max range
+
   @ViewChild('mapContainer', { static: true }) mapContainer!: any;
   @ViewChild('markerIcon', { read: TemplateRef })
   markerIcon!: TemplateRef<any>;
@@ -29,16 +33,12 @@ export class MapComponent implements AfterViewInit {
 
   map!: Leaflet.Map;
 
-  sensorTypes: string[] = [];
-  filteredSensorTypes = new Map<string, boolean>();
+  sensorTypes: string[] = []; //////
+  filteredSensorTypes = new Map<string, boolean>(); ///////////////////
   colorClass: string = '';
   iconName: string = '';
-  elevationRange: number[] = [-50, 50]; // Initial min/max range
   metaCityBorder!: Leaflet.Polygon;
-  cityPlanOpacity: number = 0;
-  cityPlanVisible: boolean = false;
   cityPlanLayer!: Leaflet.TileLayer;
-  measuringDirectionVisible: boolean = true;
   iconTemplate!: Leaflet.DivIcon;
   sensorList: any = [];
   polyline: Leaflet.LatLng[] = [];
@@ -46,7 +46,7 @@ export class MapComponent implements AfterViewInit {
   polygonArray: Leaflet.Polygon[] = [];
 
   sensorTypeLayers: { [key: string]: any } = {}; // eslint-disable-line
-  measuringDirectionLayers: { [key: string]: any } = {}; // eslint-disable-line
+  measuringDirectionLayers: { [key: string]: any } = {}; // eslint-disable-line //////////////////
 
   constructor(
     private logger: LoggerService,
@@ -57,7 +57,7 @@ export class MapComponent implements AfterViewInit {
   ) {}
 
   /** Initializes map */
-  private initMap(): Leaflet.Map {
+  initMap(): Leaflet.Map {
     this.logger.log('initMap() called');
     const map = Leaflet.map('map', {
       center: [65.059333, 25.466806],
@@ -91,9 +91,15 @@ export class MapComponent implements AfterViewInit {
     return map;
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
     this.map = this.initMap();
 
+    this.initMapFeatures();
+
+    //return this.map;
+  }
+
+  initMapFeatures(): void {
     this.http.get('/metacityBorders.json').subscribe((data) => {
       this.polyline = this.convertCoordinates(data);
       this.metaCityBorder.setLatLngs(this.polyline);
@@ -112,16 +118,10 @@ export class MapComponent implements AfterViewInit {
     // initialize floor keys
     this.sensorTypes.sort((a, b) => b.localeCompare(a));
     this.logger.log(this.sensorTypes);
+  }
 
-    const rangeSlider = document.querySelector('#rangeSlider');
-
-    rangeSlider?.addEventListener('mouseenter', (e) => {
-      this.map.dragging.disable();
-    });
-
-    rangeSlider?.addEventListener('mouseleave', (e) => {
-      this.map.dragging.enable();
-    });
+  returnSensorTypes() {
+    return this.sensorTypes;
   }
 
   /**
@@ -157,44 +157,6 @@ export class MapComponent implements AfterViewInit {
       tempLatLngArray.push(latLng);
     });
     return tempLatLngArray;
-  }
-
-  /**
-   * Toggles the visibility of the cityPlan slider
-   */
-  togglecityPlanVisibility(): void {
-    if (this.cityPlanVisible) {
-      this.cityPlanOpacity = 0;
-      this.cityPlanVisible = !this.cityPlanVisible;
-      this.cityPlanLayer.setOpacity(this.cityPlanOpacity);
-    } else {
-      this.cityPlanOpacity = 1;
-      this.cityPlanVisible = !this.cityPlanVisible;
-      this.cityPlanLayer.setOpacity(this.cityPlanOpacity);
-    }
-  }
-
-  /**
-   * Toggles the visibility of the cityPlan slider
-   */
-  toggleDirectionLayerVisibility(): void {
-    this.measuringDirectionVisible = !this.measuringDirectionVisible;
-    if (this.measuringDirectionVisible) {
-      for (const key of this.filteredSensorTypes.keys()) {
-        this.measuringDirectionLayers[key].addTo(this.map);
-      }
-    } else {
-      for (const key of this.filteredSensorTypes.keys()) {
-        this.measuringDirectionLayers[key].remove();
-      }
-    }
-  }
-
-  /**
-   * Changes the opacity of the cityPlan layer
-   */
-  changecityPlanOpacity(): void {
-    this.cityPlanLayer.setOpacity(this.cityPlanOpacity);
   }
 
   /**
@@ -341,21 +303,6 @@ export class MapComponent implements AfterViewInit {
   }
 
   /**
-   * Filters the displayed sensors
-   * @param sensor name of sensor filtering button thats pressed.
-   */
-  filterSensors(sensor: string): void {
-    this.filteredSensorTypes.set(sensor, !this.filteredSensorTypes.get(sensor));
-    if (!this.filteredSensorTypes.get(sensor)) {
-      this.sensorTypeLayers[sensor].remove();
-      this.measuringDirectionLayers[sensor].remove();
-    } else {
-      this.sensorTypeLayers[sensor].addTo(this.map);
-      this.measuringDirectionLayers[sensor].addTo(this.map);
-    }
-  }
-
-  /**
    * Creates the popup content
    * @param content sensor and all its data
    * @returns popup that is bound to the marker
@@ -381,13 +328,5 @@ export class MapComponent implements AfterViewInit {
     componentRef.instance.dataValue = content.dataLatestValue;
 
     return componentRef.location.nativeElement;
-  }
-
-  /**
-   * Changes the markers that are displayed when the elevation changes
-   */
-  onSliderChange(): void {
-    this.logger.log(this.elevationRange);
-    this.displayMarkers();
   }
 }
