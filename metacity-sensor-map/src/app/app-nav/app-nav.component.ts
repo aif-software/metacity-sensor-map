@@ -13,6 +13,7 @@ import * as Leaflet from 'leaflet';
 export class AppNavComponent implements AfterViewInit {
   @ViewChild(MapComponent) mapComponent!: MapComponent;
   measuringDirectionVisible: boolean = true;
+  flightPathVisible: boolean = true;
   filteredSensorTypes = new Map<string, boolean>();
   map!: Leaflet.Map;
   cityPlanOpacity: number = 0;
@@ -27,10 +28,11 @@ export class AppNavComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.mapComponent.elevationRange = this.elevationRange;
-    //this.mapComponent.ngAfterViewInit();
+
     this.sensorTypes = this.mapComponent.sensorTypes;
     this.filteredSensorTypes = this.mapComponent.filteredSensorTypes;
-    const rangeSlider = document.querySelector('#rangeSlider');
+
+    // const rangeSlider = document.querySelector('#rangeSlider');
 
     // rangeSlider?.addEventListener('mouseenter', (e) => {
     //   this.map.dragging.disable();
@@ -57,6 +59,13 @@ export class AppNavComponent implements AfterViewInit {
   }
 
   /**
+   * Changes the opacity of the cityPlan layer
+   */
+  changecityPlanOpacity(): void {
+    this.mapComponent.cityPlanLayer.setOpacity(this.cityPlanOpacity);
+  }
+
+  /**
    * Toggles the visibility of the cityPlan slider
    */
   toggleDirectionLayerVisibility(): void {
@@ -74,11 +83,17 @@ export class AppNavComponent implements AfterViewInit {
     }
   }
 
-  /**
-   * Changes the opacity of the cityPlan layer
-   */
-  changecityPlanOpacity(): void {
-    this.mapComponent.cityPlanLayer.setOpacity(this.cityPlanOpacity);
+  toggleFlightPathVisibility(): void {
+    this.flightPathVisible = !this.flightPathVisible;
+    if (this.flightPathVisible) {
+      for (const key of this.filteredSensorTypes.keys()) {
+        this.mapComponent.pathLayers[key].addTo(this.mapComponent.map);
+      }
+    } else {
+      for (const key of this.filteredSensorTypes.keys()) {
+        this.mapComponent.pathLayers[key].remove();
+      }
+    }
   }
 
   /**

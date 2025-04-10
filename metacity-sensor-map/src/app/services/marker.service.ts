@@ -46,12 +46,14 @@ export class MarkerService {
         return 'directions_walk';
       case 'co2':
         return 'co2';
-      case 'TrafficLight':
+      case 'Traffic Light':
         return 'traffic';
       case 'Counter':
         return 'directions_walk';
       case 'BikeRental':
         return 'pedal_bike';
+      case 'drone':
+        return 'public';
       default:
         return '';
     }

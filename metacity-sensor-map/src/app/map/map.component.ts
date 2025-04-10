@@ -33,8 +33,8 @@ export class MapComponent implements AfterViewInit {
 
   map!: Leaflet.Map;
 
-  sensorTypes: string[] = []; //////
-  filteredSensorTypes = new Map<string, boolean>(); ///////////////////
+  sensorTypes: string[] = [];
+  filteredSensorTypes = new Map<string, boolean>();
   colorClass: string = '';
   iconName: string = '';
   metaCityBorder!: Leaflet.Polygon;
@@ -46,7 +46,8 @@ export class MapComponent implements AfterViewInit {
   polygonArray: Leaflet.Polygon[] = [];
 
   sensorTypeLayers: { [key: string]: any } = {}; // eslint-disable-line
-  measuringDirectionLayers: { [key: string]: any } = {}; // eslint-disable-line //////////////////
+  measuringDirectionLayers: { [key: string]: any } = {}; // eslint-disable-line
+  pathLayers: { [key: string]: any } = {}; // eslint-disable-line
 
   constructor(
     private logger: LoggerService,
@@ -95,8 +96,6 @@ export class MapComponent implements AfterViewInit {
     this.map = this.initMap();
 
     this.initMapFeatures();
-
-    //return this.map;
   }
 
   initMapFeatures(): void {
@@ -112,12 +111,11 @@ export class MapComponent implements AfterViewInit {
     });
 
     this.map.on('click', function (e) {
-      // console.log(e.latlng);
+      console.log(e.latlng);
     });
 
     // initialize floor keys
     this.sensorTypes.sort((a, b) => b.localeCompare(a));
-    this.logger.log(this.sensorTypes);
   }
 
   returnSensorTypes() {
@@ -142,6 +140,9 @@ export class MapComponent implements AfterViewInit {
 
       this.measuringDirectionLayers[key] = Leaflet.layerGroup();
       this.measuringDirectionLayers[key].addTo(this.map);
+
+      this.pathLayers[key] = Leaflet.layerGroup();
+      this.pathLayers[key].addTo(this.map);
     }
   }
 
@@ -205,8 +206,8 @@ export class MapComponent implements AfterViewInit {
             // Convert from ETRS-TM35FIN (EPSG:3067) (Used by the finnish government and cities) to WGS84 (EPSG:4326) (Used by most online mapping softwares, including openstreetmaps)
             marker = this.markerService.convertCrs(marker);
           }
-
-          const measuringDirectionArray =
+          var measuringDirectionArray: any;
+          measuringDirectionArray =
             this.coordinateService.generateConeCoordinates(
               marker.location.lat,
               marker.location.lng,
@@ -214,7 +215,7 @@ export class MapComponent implements AfterViewInit {
             );
 
           if (
-            marker.sensorType == 'TrafficLight' ||
+            marker.sensorType == 'Traffic Light' ||
             marker.dataLatestValue != null
           ) {
             this.markerService
@@ -261,6 +262,29 @@ export class MapComponent implements AfterViewInit {
                 weight: 4,
                 fill: true,
               }).addTo(this.measuringDirectionLayers[marker.sensorType]);
+            }
+            if (marker.location.path) {
+              this.logger.log(marker.id);
+              marker.location.path.push({
+                lat: marker.location.lat,
+                lng: marker.location.lng,
+              });
+              const pathArray = this.convertCoordinates(marker.location.path);
+              Leaflet.polyline(pathArray, {
+                color: 'blue',
+                opacity: 1,
+                weight: 4,
+              }).addTo(this.pathLayers[marker.sensorType]);
+            }
+            if (marker.location.area) {
+              const movementArea = this.convertCoordinates(
+                marker.location.area,
+              );
+              Leaflet.polygon(movementArea, {
+                color: 'blue',
+                opacity: 1,
+                weight: 4,
+              }).addTo(this.pathLayers[marker.sensorType]);
             }
           }
 

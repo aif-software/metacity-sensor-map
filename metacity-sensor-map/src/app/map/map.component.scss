@@ -23,100 +23,8 @@
   border-bottom: 1px solid black;
 }
 
-.map-dialog-div {
-  display: flex;
-  justify-content: space-between;
-}
-
-.close-button {
-  top: 1em;
-  right: 1em;
-  width: 2em;
-  height: 2em;
-  min-width: 2em;
-  min-height: 2em;
-  padding: 0px;
-  padding-left: 5px;
-  pointer-events: auto;
-}
-
-mat-button-toggle-group {
-  position: relative;
-  margin-left: 0px;
-}
-
-.sliderHeaderArea {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.sliderArea {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 20em;
-  right: 4em;
-  top: 1em;
-  justify-content: center;
-}
-
-.rangeSlider {
-  pointer-events: auto;
-  width: 12em;
-  position: absolute;
-}
-
-.cityPlanArea {
-  width: 20em;
-}
-
-.mittaussuuntaButton {
-  right: 3em;
-}
-
-.opacitySlider {
-  pointer-events: auto;
-  width: 8em;
-  left: 1em;
-}
-
-.elevationValue {
-  margin-right: 7em;
-  margin-left: 7em;
-}
-
 #map {
   height: 100%;
-}
-
-.select {
-  margin-left: 1rem;
-  right: 1em;
-  bottom: 2em;
-  pointer-events: auto;
-}
-
-.help {
-  margin-left: 1rem;
-  right: 0.2em;
-  bottom: 2em;
-  pointer-events: auto;
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-  padding: 0px;
-}
-
-.helpIcon {
-  padding-left: 0.5em;
-  padding-bottom: 2px;
-  font-size: 1.4em;
-}
-
-.floorlevel {
-  pointer-events: auto;
-  position: relative;
 }
 
 .icon-container {
@@ -133,6 +41,7 @@ mat-button-toggle-group {
 
 .overlay-icon {
   position: absolute;
+  stroke: black !important;
   top: 60%; /* Move to center */
   left: 68%;
   transform: translate(-50%, -50%); /* Center perfectly */
