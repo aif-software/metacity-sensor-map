@@ -39,21 +39,21 @@ export class MarkerService {
   getMarkerIcons(marker: any): string {
     switch (marker.sensorType) {
       case 'temperature':
-        return 'device_thermostat';
+        return 'temperature';
       case 'humidity':
-        return 'water_drop';
+        return 'moisture';
       case 'motion':
-        return 'directions_walk';
+        return 'walk';
       case 'co2':
         return 'co2';
       case 'Traffic Light':
         return 'traffic';
       case 'Counter':
-        return 'directions_walk';
-      case 'BikeRental':
+        return 'walk';
+      case 'Bike Rental':
         return 'pedal_bike';
       case 'drone':
-        return 'public';
+        return 'drone';
       default:
         return '';
     }
