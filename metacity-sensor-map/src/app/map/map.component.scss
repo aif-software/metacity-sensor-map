@@ -42,10 +42,11 @@
 .overlay-icon {
   position: absolute;
   stroke: black !important;
-  top: 60%; /* Move to center */
-  left: 68%;
+  top: 40%; /* Move to center */
+  left: 49%;
   transform: translate(-50%, -50%); /* Center perfectly */
-  font-size: 15px; /* Adjust icon size */
+  width: 17px !important;
+  height: 17px !important;
 }
 
 .Offline {

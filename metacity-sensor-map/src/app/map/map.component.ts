@@ -264,7 +264,6 @@ export class MapComponent implements AfterViewInit {
               }).addTo(this.measuringDirectionLayers[marker.sensorType]);
             }
             if (marker.location.path) {
-              this.logger.log(marker.id);
               marker.location.path.push({
                 lat: marker.location.lat,
                 lng: marker.location.lng,
