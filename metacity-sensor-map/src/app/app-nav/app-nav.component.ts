@@ -83,7 +83,7 @@ export class AppNavComponent implements AfterViewInit {
     }
   }
 
-  toggleFlightPathVisibility(): void {
+  togglePathVisibility(): void {
     this.flightPathVisible = !this.flightPathVisible;
     if (this.flightPathVisible) {
       for (const key of this.filteredSensorTypes.keys()) {
