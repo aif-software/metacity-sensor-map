@@ -105,6 +105,7 @@ export class MapComponent implements AfterViewInit {
     });
 
     this.markerService.getSensorMarkers().subscribe((res) => {
+      this.logger.log(res);
       this.filterTypeKeys(res);
       this.generateSensorLayers(res);
       this.displayMarkers(res);
@@ -182,6 +183,7 @@ export class MapComponent implements AfterViewInit {
     for (const key of this.filteredSensorTypes.keys()) {
       this.sensorTypeLayers[key].clearLayers();
       this.measuringDirectionLayers[key].clearLayers();
+      this.pathLayers[key].clearLayers();
     }
 
     // If sensor list is not provided, uses the previously used sensor list instead
@@ -346,7 +348,7 @@ export class MapComponent implements AfterViewInit {
     componentRef.instance.elevation = elevationString;
     componentRef.instance.status = content.status;
     componentRef.instance.sensorType = content.sensorType;
-    componentRef.instance.dataSecret = content.dataSecret;
+    componentRef.instance.isDataSecret = content.isDataSecret;
     componentRef.instance.linkToData = content.dataLink;
     componentRef.instance.dataValue = content.dataLatestValue;
 
