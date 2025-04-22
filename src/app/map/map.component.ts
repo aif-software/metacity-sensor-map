@@ -60,11 +60,14 @@ export class MapComponent implements AfterViewInit {
   /** Initializes map */
   initMap(): Leaflet.Map {
     this.logger.log('initMap() called');
+
+    // Creates map object and centers it at Linnanmaa
     const map = Leaflet.map('map', {
       center: [65.059333, 25.466806],
       zoom: 15,
     });
 
+    // Draws the border around the Metacity area
     this.metaCityBorder = Leaflet.polygon(this.polyline, {
       color: 'red',
       weight: 4,
@@ -73,6 +76,7 @@ export class MapComponent implements AfterViewInit {
       dashOffset: '10',
     }).addTo(map);
 
+    // Retrieves the tiles for the map
     const tiles = Leaflet.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
@@ -82,6 +86,8 @@ export class MapComponent implements AfterViewInit {
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       },
     );
+
+    // Retrieves the cityplan for showing the current cityplan. Updates automatically as new cityplans are submitted for public use.
     this.cityPlanLayer = Leaflet.tileLayer.wms(
       'https://e-kartta.ouka.fi/TeklaOgcWebOpen/WMS.ashx',
       { layers: 'Asemakaava', opacity: 0 },
@@ -92,18 +98,26 @@ export class MapComponent implements AfterViewInit {
     return map;
   }
 
+  /**
+   * Initializes the map
+   */
   ngAfterViewInit() {
     this.map = this.initMap();
 
     this.initMapFeatures();
   }
 
+  /**
+   * Initializes the features of the map, such as markers and the coordinates of the border of Metacity.
+   */
   initMapFeatures(): void {
+    // Retrieves the coordinates for the Metacity border
     this.http.get('/metacityBorders.json').subscribe((data) => {
       this.polyline = this.convertCoordinates(data);
       this.metaCityBorder.setLatLngs(this.polyline);
     });
 
+    // Retrieves the data for markers from the backend. Filters all sensortypes, generates layers for each type of sensors and then displays the markers.
     this.markerService.getSensorMarkers().subscribe((res) => {
       this.logger.log(res);
       this.filterTypeKeys(res);
@@ -111,14 +125,19 @@ export class MapComponent implements AfterViewInit {
       this.displayMarkers(res);
     });
 
+    // Temporary function to show the coordinates of mouse click.
     this.map.on('click', function (e) {
       console.log(e.latlng);
     });
 
-    // initialize floor keys
+    // Sorts floor keys alphabetically.
     this.sensorTypes.sort((a, b) => b.localeCompare(a));
   }
 
+  /**
+   * Returns sensorTypes, used to get them for navigation layer.
+   * @returns list of sensor types
+   */
   returnSensorTypes() {
     return this.sensorTypes;
   }
@@ -128,6 +147,7 @@ export class MapComponent implements AfterViewInit {
    * @param devices device list fetched from backend
    */
   generateSensorLayers(res: Device[]) {
+    // Sets each sensor layer to visible
     res.forEach((marker: any) => {
       this.filteredSensorTypes.set(marker.sensorType, true);
       if (!this.sensorTypes.includes(marker.sensorType)) {
@@ -135,6 +155,7 @@ export class MapComponent implements AfterViewInit {
       }
     });
 
+    // Generates needed layers for each sensor type. Generates layers for markers, their measuring direction and paths. Each sensor type has one of each layer.
     for (const key of this.filteredSensorTypes.keys()) {
       this.sensorTypeLayers[key] = Leaflet.layerGroup();
       this.sensorTypeLayers[key].addTo(this.map);
@@ -191,6 +212,7 @@ export class MapComponent implements AfterViewInit {
       this.sensorList = res;
     }
 
+    // Goes through the list of sensors and generates a marker for each
     this.sensorList.forEach((marker: any) => {
       // Determine if the marker should be displayed based on currently chosen elevation range
       if (
@@ -204,10 +226,12 @@ export class MapComponent implements AfterViewInit {
           // Determine what color the icon should be based on its current status (Online, Offline, Maintenance)
           this.colorClass = marker.status;
 
+          // Convert from ETRS-TM35FIN (EPSG:3067) (Used by the finnish government and cities) to WGS84 (EPSG:4326) (Used by most online mapping softwares, including openstreetmaps)
           if (marker.crsType == 'EPSG:3067') {
-            // Convert from ETRS-TM35FIN (EPSG:3067) (Used by the finnish government and cities) to WGS84 (EPSG:4326) (Used by most online mapping softwares, including openstreetmaps)
             marker = this.markerService.convertCrs(marker);
           }
+
+          // Generates coordinates to show direction of measurement
           var measuringDirectionArray: any;
           measuringDirectionArray =
             this.coordinateService.generateConeCoordinates(
@@ -216,10 +240,12 @@ export class MapComponent implements AfterViewInit {
               marker.measuringDirection,
             );
 
+          // If the sensor is a traffic light, contacts the traffic light API to get wait time data. Only for development to show actual data.
           if (
             marker.sensorType == 'Traffic Light' ||
             marker.dataLatestValue != null
           ) {
+            // Connects to the traffic light API
             this.markerService
               .getTrafficLightData(marker.id)
               .subscribe((data: any) => {
@@ -236,7 +262,7 @@ export class MapComponent implements AfterViewInit {
 
                 var measuringDirectionColor;
 
-                // Assigns color for the circle depending on wait time (seconds)
+                // Assigns color for the measurement area depending on wait time (seconds)
                 if (totalWaitAVG < 10) {
                   measuringDirectionColor = 'green';
                 } else if (totalWaitAVG < 20) {
@@ -245,6 +271,7 @@ export class MapComponent implements AfterViewInit {
                   measuringDirectionColor = 'red';
                 }
 
+                // Draws the measurement direction of the traffic light with previously provided color
                 var polygon = Leaflet.polygon(measuringDirectionArray, {
                   color: measuringDirectionColor,
                   opacity: 1,
@@ -258,6 +285,7 @@ export class MapComponent implements AfterViewInit {
               marker.measuringDirection[0] != 0 &&
               marker.measuringDirection[1] != 0
             ) {
+              // Draws the measurement direction of the sensor
               Leaflet.polygon(measuringDirectionArray, {
                 color: 'blue',
                 opacity: 1,
@@ -270,6 +298,7 @@ export class MapComponent implements AfterViewInit {
                 lat: marker.location.lat,
                 lng: marker.location.lng,
               });
+              // If sensor contains path data, draws a polyline following that
               const pathArray = this.convertCoordinates(marker.location.path);
               Leaflet.polyline(pathArray, {
                 color: 'blue',
@@ -278,6 +307,7 @@ export class MapComponent implements AfterViewInit {
               }).addTo(this.pathLayers[marker.sensorType]);
             }
             if (marker.location.area) {
+              // If sensor contains measurement area data, draws a polygon to display it
               const movementArea = this.convertCoordinates(
                 marker.location.area,
               );
@@ -310,6 +340,7 @@ export class MapComponent implements AfterViewInit {
             popupAnchor: [1, -25],
           });
 
+          // Assigns the coordinates of the marker
           const coords = new Leaflet.LatLng(
             marker.location.lat,
             marker.location.lng,
@@ -317,8 +348,11 @@ export class MapComponent implements AfterViewInit {
           const sensorMarker = Leaflet.marker(coords, {
             icon: this.iconTemplate,
           });
+
+          // Binds the popup data to the marker to show when clicked
           sensorMarker.bindPopup(() => this.createPopupContent(marker));
 
+          // Adds the marker to its respective layer
           sensorMarker.addTo(this.sensorTypeLayers[marker.sensorType]);
         } else {
           this.logger.log(marker.sensorType);
@@ -333,11 +367,12 @@ export class MapComponent implements AfterViewInit {
    * @returns popup that is bound to the marker
    */
   createPopupContent(content: any): HTMLElement {
-    // Clear previous components if any
+    // Clear previous components if any.
     this.popupContainer.clear();
 
     const componentRef: ComponentRef<PopupComponent> =
       this.popupContainer.createComponent(PopupComponent);
+    // Sets location and elevation strings.
     const locationString = `${content.location.lat} , ${content.location.lng}`;
     const elevationString = `${content.location.elevation}`;
 

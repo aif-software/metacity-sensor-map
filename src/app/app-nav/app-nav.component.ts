@@ -83,6 +83,9 @@ export class AppNavComponent implements AfterViewInit {
     }
   }
 
+  /**
+   * Toggles the visibility of the paths
+   */
   togglePathVisibility(): void {
     this.flightPathVisible = !this.flightPathVisible;
     if (this.flightPathVisible) {
