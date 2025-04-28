@@ -24,6 +24,27 @@
   </p>
   <mat-divider></mat-divider>
   <p>
+    <b>{{ "Is sensor stationary?: " + stationary }}</b>
+  </p>
+  <mat-divider></mat-divider>
+  <p *ngIf="measuringInterval">
+    <b *ngIf="measuringInterval <= 60">{{
+      "Measuring Interval: " + measuringInterval + " Sekuntia"
+    }}</b>
+    <b *ngIf="measuringInterval >= 60">{{
+      "Measuring Interval: " + measuringInterval / 60 + " Minuuttia"
+    }}</b>
+  </p>
+  <mat-divider *ngIf="measuringDescription"></mat-divider>
+  <p *ngIf="measuringDescription">
+    <b>{{ "Measuring Description: " + measuringDescription }}</b>
+  </p>
+  <mat-divider *ngIf="measuringRadius"></mat-divider>
+  <p *ngIf="measuringRadius">
+    <b>{{ "Measuring Radius: " + measuringRadius }}</b>
+  </p>
+  <mat-divider></mat-divider>
+  <p>
     <b>{{ "Is data secret?: " + isDataSecret }}</b>
   </p>
   <mat-divider *ngIf="dataValue"></mat-divider>

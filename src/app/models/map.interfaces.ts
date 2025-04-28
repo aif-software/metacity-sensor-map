@@ -2,12 +2,17 @@
 interface Device {
   id: string;
   crsType: string;
+  iconName: string;
   location: Location;
   status: string;
   sensorType: string;
   description: string;
   isDataSecret: boolean;
   measuringDirection?: [number, number];
+  measuringRadius: number;
+  measuringInterval: number;
+  measuringDescription?: string;
+  stationary: boolean;
   dataLink?: string;
   dataLatestValue?: string;
 }

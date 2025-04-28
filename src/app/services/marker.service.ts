@@ -46,34 +46,6 @@ export class MarkerService {
   }
 
   /**
-   * Returns a icon name according to markers sensor type
-   * @param marker marker
-   * @returns icon name
-   */
-  getMarkerIcons(marker: any): string {
-    switch (marker.sensorType) {
-      case 'temperature':
-        return 'temperature';
-      case 'humidity':
-        return 'moisture';
-      case 'motion':
-        return 'walk';
-      case 'co2':
-        return 'co2';
-      case 'Traffic Light':
-        return 'traffic';
-      case 'Counter':
-        return 'walk';
-      case 'Bike Rental':
-        return 'pedal_bike';
-      case 'drone':
-        return 'drone';
-      default:
-        return '';
-    }
-  }
-
-  /**
    * Converts the markers CRS and markers location coordinates from EPSG:3067 to EPSG:4326. EPSG:3067 is used by some finnish goverment agencies, EPSG:4326 is used by most mapping software, including the openStreetMaps that provides maps for this application
    * @param marker marker with coordinates in the format EPSG:3067.
    * @returns marker with new location coordinates and CRS Type changed.

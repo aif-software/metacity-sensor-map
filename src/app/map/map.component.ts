@@ -221,8 +221,6 @@ export class MapComponent implements AfterViewInit {
       ) {
         // Determine which icon each marker should use
         if (this.filteredSensorTypes.get(marker.sensorType)) {
-          this.iconName = this.markerService.getMarkerIcons(marker);
-
           // Determine what color the icon should be based on its current status (Online, Offline, Maintenance)
           this.colorClass = marker.status;
 
@@ -233,13 +231,15 @@ export class MapComponent implements AfterViewInit {
 
           // Generates coordinates to show direction of measurement
           var measuringDirectionArray: any;
-          measuringDirectionArray =
-            this.coordinateService.generateConeCoordinates(
-              marker.location.lat,
-              marker.location.lng,
-              marker.measuringDirection,
-            );
-
+          if (marker.measuringRadius != 0) {
+            measuringDirectionArray =
+              this.coordinateService.generateConeCoordinates(
+                marker.location.lat,
+                marker.location.lng,
+                marker.measuringDirection,
+                marker.measuringRadius,
+              );
+          }
           // If the sensor is a traffic light, contacts the traffic light API to get wait time data. Only for development to show actual data.
           if (
             marker.sensorType == 'Traffic Light' ||
@@ -285,13 +285,15 @@ export class MapComponent implements AfterViewInit {
               marker.measuringDirection[0] != 0 &&
               marker.measuringDirection[1] != 0
             ) {
+              if (marker.measuringRadius != 0) {
+                Leaflet.polygon(measuringDirectionArray, {
+                  color: 'blue',
+                  opacity: 1,
+                  weight: 4,
+                  fill: true,
+                }).addTo(this.measuringDirectionLayers[marker.sensorType]);
+              }
               // Draws the measurement direction of the sensor
-              Leaflet.polygon(measuringDirectionArray, {
-                color: 'blue',
-                opacity: 1,
-                weight: 4,
-                fill: true,
-              }).addTo(this.measuringDirectionLayers[marker.sensorType]);
             }
             if (marker.location.path) {
               marker.location.path.push({
@@ -319,10 +321,13 @@ export class MapComponent implements AfterViewInit {
             }
           }
 
+          // Instantaniate the icon used by html template
+          this.iconName = marker.iconName;
+
           // Create an embedded view with the icon and color class
           const embeddedView = this.viewContainerRef.createEmbeddedView(
             this.markerIcon,
-            { icon: this.iconName, color: this.colorClass },
+            { color: this.colorClass },
           );
           embeddedView.detectChanges();
 
@@ -372,20 +377,23 @@ export class MapComponent implements AfterViewInit {
 
     const componentRef: ComponentRef<PopupComponent> =
       this.popupContainer.createComponent(PopupComponent);
-    // Sets location and elevation strings.
+    // Sets location strings.
     const locationString = `${content.location.lat} , ${content.location.lng}`;
-    const elevationString = `${content.location.elevation}`;
 
     // Set data for the popup
     componentRef.instance.id = content.id;
     componentRef.instance.description = content.description;
     componentRef.instance.location = locationString;
-    componentRef.instance.elevation = elevationString;
+    componentRef.instance.elevation = content.location.elevation;
     componentRef.instance.status = content.status;
     componentRef.instance.sensorType = content.sensorType;
     componentRef.instance.isDataSecret = content.isDataSecret;
-    componentRef.instance.linkToData = content.dataLink;
+    componentRef.instance.measuringInterval = content.measuringInterval;
+    componentRef.instance.measuringRadius = content.measuringRadius;
+    componentRef.instance.measuringDescription = content.measuringDescription;
+    componentRef.instance.stationary = content.stationary;
     componentRef.instance.dataValue = content.dataLatestValue;
+    componentRef.instance.linkToData = content.dataLink;
 
     return componentRef.location.nativeElement;
   }
