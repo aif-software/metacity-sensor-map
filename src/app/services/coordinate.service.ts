@@ -50,12 +50,13 @@ export class CoordinateService {
     startLat: number,
     startLng: number,
     direction: number[],
+    inputRadius: number,
   ): { lat: number; lng: number }[] {
     const coordinates: { lat: number; lng: number }[] = [];
+    const radius: number = inputRadius / 110000;
 
     // If either measurement direction is not -180 or 180, draws the measurement direction as cone
     if (direction[0] != -180 || direction[1] != 180) {
-      const radius: number = 0.0005;
       const numPoints: number = 20;
       const startAngle = direction[0] * (Math.PI / 180);
       const endAngle = direction[1] * (Math.PI / 180);
@@ -83,8 +84,6 @@ export class CoordinateService {
 
       // Generate points in a circle around the marker
       for (let i = 0; i < this.pointCount; i++) {
-        const radius: number = 0.0005;
-
         const angle = i * angleStep;
         const deltaLat = radius * Math.cos(angle);
         // Adjust for latitude distortion, read more at https://en.wikipedia.org/wiki/Mercator_projection#Distortion_of_sizes
