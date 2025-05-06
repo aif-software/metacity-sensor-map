@@ -108,11 +108,13 @@ export class AppNavComponent implements AfterViewInit {
     if (!this.filteredSensorTypes.get(sensor)) {
       this.mapComponent.sensorTypeLayers[sensor].remove();
       this.mapComponent.measuringDirectionLayers[sensor].remove();
+      this.mapComponent.pathLayers[sensor].remove();
     } else {
       this.mapComponent.sensorTypeLayers[sensor].addTo(this.mapComponent.map);
       this.mapComponent.measuringDirectionLayers[sensor].addTo(
         this.mapComponent.map,
       );
+      this.mapComponent.pathLayers[sensor].addTo(this.mapComponent.map);
     }
   }
 
