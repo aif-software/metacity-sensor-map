@@ -6,6 +6,7 @@ interface Device {
   location: Location;
   status: string;
   sensorType: string;
+  sensorModel?: string;
   description: string;
   isDataSecret: boolean;
   measuringDirection?: [number, number];

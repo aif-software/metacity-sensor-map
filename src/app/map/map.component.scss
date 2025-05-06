@@ -1,16 +1,16 @@
-.map-container {
-  // top: 0;
-  // left: 0;
-  // right: 0;
-  // bottom: 0;
-  // margin: 62px;
-  min-height: 50em;
-  min-width: 80em;
+.map-frame {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
 }
 
-.map-frame {
-  border: 2px solid black;
-  height: 60em;
+.leaflet-container {
+  height: 100% !important;
 }
 
 .header {
