@@ -1,16 +1,44 @@
+.app-nav {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
 .header {
   height: 4em;
-  background-color: rgb(241, 241, 241);
+  position: absolute;
+  max-width: 97%;
+  border-radius: 10px;
+  transform: translateX(-50%);
+  top: 1rem;
+  left: 50%;
+  display: flex;
+  // background-color: rgb(241, 241, 241);
+  background: linear-gradient(#ffffff, #f0f0f0);
   justify-content: space-around;
   align-items: center;
-  padding-right: 1.5em;
-  padding-left: 2.5em;
-  border-bottom: 1px solid black;
+  border: 1px solid black;
+  z-index: 1000;
+}
+
+.elevationText {
+  font-family: "BarlowLight";
+  margin-bottom: 1rem;
 }
 
 mat-button-toggle-group {
   position: relative;
   margin-left: 0px;
+}
+
+.metacityTextLogo {
+  display: inline-block;
+  color: #001e95;
+  font-size: 3rem;
+  margin-left: -0.5em;
+  padding-top: 0.2em;
+  text-decoration: none;
+  font-family: "OulunGraadi";
 }
 
 .sliderHeaderArea {
@@ -25,7 +53,7 @@ mat-button-toggle-group {
   align-items: center;
   width: 20em;
   right: 4em;
-  top: 1em;
+  margin-bottom: 1rem;
   justify-content: center;
 }
 
@@ -42,6 +70,7 @@ mat-button-toggle-group {
 
 .toggleButton {
   margin-right: 2em;
+  font-size: 15px;
 }
 
 .opacitySlider {
@@ -50,9 +79,16 @@ mat-button-toggle-group {
   left: 1em;
 }
 
-.elevationValue {
-  margin-right: 7em;
-  margin-left: 7em;
+.elevationValueLeft {
+  position: absolute;
+  margin-left: -22rem;
+  margin-bottom: 0.5rem;
+}
+
+.elevationValueRight {
+  position: absolute;
+  margin-right: -22rem;
+  margin-bottom: 0.5rem;
 }
 
 .select {
