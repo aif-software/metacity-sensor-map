@@ -1,5 +1,8 @@
 <div class="app-nav">
   <mat-toolbar class="header">
+    <div>
+      <a class="metacityTextLogo" href="https://metacity.fi">MetaCity</a>
+    </div>
     <mat-button-toggle-group
       class="toggleButtonGroup"
       multiple
@@ -59,9 +62,9 @@
       </mat-slider>
     </div>
     <div class="sliderHeaderArea">
-      <h1>Elevation</h1>
+      <h1 class="elevationText">Elevation</h1>
       <div class="sliderArea">
-        <p class="elevationValue">{{ elevationRange[0] + "m" }}</p>
+        <p class="elevationValueLeft">{{ elevationRange[0] + "m" }}</p>
         <mat-slider
           #rangeSlider
           id="rangeSlider"
@@ -87,7 +90,7 @@
             matSliderEndThumb
           />
         </mat-slider>
-        <p class="elevationValue">{{ elevationRange[1] + "m" }}</p>
+        <p class="elevationValueRight">{{ elevationRange[1] + "m" }}</p>
       </div>
     </div>
   </mat-toolbar>
