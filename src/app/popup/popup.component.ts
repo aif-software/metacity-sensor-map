@@ -13,6 +13,7 @@ export class PopupComponent {
   @Input() elevation?: number;
   @Input() status?: string;
   @Input() sensorType?: string;
+  @Input() sensorModel?: string;
   @Input() isDataSecret?: string;
   @Input() measuringInterval?: number;
   @Input() measuringDescription?: string;

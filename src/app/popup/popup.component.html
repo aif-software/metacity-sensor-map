@@ -23,6 +23,10 @@
     <b>{{ "Sensor Type: " + sensorType }}</b>
   </p>
   <mat-divider></mat-divider>
+  <p *ngIf="sensorModel">
+    <b>{{ "Sensor Model: " + sensorModel }}</b>
+  </p>
+  <mat-divider *ngIf="sensorModel"></mat-divider>
   <p>
     <b>{{ "Is sensor stationary?: " + stationary }}</b>
   </p>
@@ -54,7 +58,7 @@
   <mat-divider *ngIf="linkToData"></mat-divider>
   <div class="buttonArea">
     <button class="linkButton" mat-flat-button *ngIf="linkToData">
-      <a target="_blank" class="link" href="{{ linkToData }}">{{ id }}</a>
+      <a target="_blank" class="link" href="{{ linkToData }}">Link to Data</a>
     </button>
   </div>
 </div>
