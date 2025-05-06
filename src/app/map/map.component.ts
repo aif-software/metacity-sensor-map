@@ -65,6 +65,7 @@ export class MapComponent implements AfterViewInit {
     const map = Leaflet.map('map', {
       center: [65.059333, 25.466806],
       zoom: 15,
+      zoomControl: false,
     });
 
     // Draws the border around the Metacity area
@@ -387,6 +388,7 @@ export class MapComponent implements AfterViewInit {
     componentRef.instance.elevation = content.location.elevation;
     componentRef.instance.status = content.status;
     componentRef.instance.sensorType = content.sensorType;
+    componentRef.instance.sensorModel = content.sensorModel;
     componentRef.instance.isDataSecret = content.isDataSecret;
     componentRef.instance.measuringInterval = content.measuringInterval;
     componentRef.instance.measuringRadius = content.measuringRadius;
