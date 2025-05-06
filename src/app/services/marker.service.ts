@@ -23,7 +23,7 @@ export class MarkerService {
    * @returns a list of sensors
    */
   getSensorMarkers(): Observable<Device[]> {
-    return this.http.get<Device[]>(this.url + 'Devices');
+    return this.http.get<Device[]>(this.url + 'devices');
   }
 
   /**
