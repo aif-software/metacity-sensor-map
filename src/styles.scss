@@ -3,16 +3,38 @@
 @include mat.core();
 
 @font-face {
-  font-family: Messina-sans;
-  src: url("/MessinaSans-Regular.otf");
-  format: "opentype";
+  font-family: "OulunGraadi";
+  src: url("/fonts/OulunGraadi-Otsikko.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Barlow";
+  src: url("/fonts/Barlow-Black.ttf") format("opentype");
+  font-weight: lighter;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "BarlowLight";
+  src: url("/fonts/Barlow-Light.ttf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "BarlowMedium";
+  src: url("/fonts/Barlow-Medium.ttf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Messina-sans;
+  font-family: "BarlowLight";
 }
 
 :root {
@@ -26,6 +48,7 @@
 html,
 body {
   height: 100%;
+  background: transparent;
 }
 body {
   margin: 0;
