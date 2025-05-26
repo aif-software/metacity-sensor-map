@@ -1,9 +1,14 @@
 .popupContent {
   width: 22em;
+  min-width: 22em;
+}
+
+.popup {
+  display: flex;
+  width: 22em;
 }
 
 .linkButton {
-  padding-top: 0em;
   overflow: hidden;
 }
 
@@ -11,8 +16,14 @@
   color: white;
 }
 
+.popupCard {
+  margin-left: 3em;
+  padding: 1em;
+  background-color: white;
+}
+
 .buttonArea {
   padding-top: 1em;
+  align-self: flex-end;
   display: flex;
-  margin-right: 12em;
 }
