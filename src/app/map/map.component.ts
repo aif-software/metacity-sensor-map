@@ -383,6 +383,7 @@ export class MapComponent implements AfterViewInit {
 
     // Set data for the popup
     componentRef.instance.id = content.id;
+    componentRef.instance.name = content.name;
     componentRef.instance.description = content.description;
     componentRef.instance.location = locationString;
     componentRef.instance.elevation = content.location.elevation;
@@ -396,6 +397,25 @@ export class MapComponent implements AfterViewInit {
     componentRef.instance.stationary = content.stationary;
     componentRef.instance.dataValue = content.dataLatestValue;
     componentRef.instance.linkToData = content.dataLink;
+
+
+    if(content.weatherData){
+      this.logger.log(content)
+
+      componentRef.instance.air_temperature = content.weatherData.air_temperature;
+      componentRef.instance.air_relative_humidity = content.weatherData.air_relative_humidity;
+      componentRef.instance.dew_point_temperature = content.weatherData.dew_point_temperature;
+      componentRef.instance.wind_speed = content.weatherData.wind_speed;
+      componentRef.instance.wind_direction = content.weatherData.wind_direction;
+      componentRef.instance.rainfall_depth = content.weatherData.rainfall_depth;
+      componentRef.instance.rainfall_intensity = content.weatherData.rainfall_intensity;
+      componentRef.instance.snow_depth_a = content.weatherData.snow_depth_a;
+      componentRef.instance.snow_depth_b = content.weatherData.snow_depth_b;
+      componentRef.instance.snow_depth_c = content.weatherData.snow_depth_c;
+      componentRef.instance.snow_depth = content.weatherData.snow_depth;
+      componentRef.instance.rain_classification = content.weatherData.rain_classification;
+      componentRef.instance.road_surface_temperature = content.weatherData.road_surface_temperature;
+      }
 
     return componentRef.location.nativeElement;
   }
