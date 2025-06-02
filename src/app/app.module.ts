@@ -16,6 +16,9 @@ import { PopupComponent } from './popup/popup.component';
 import { FormsModule } from '@angular/forms';
 import { AppNavComponent } from './app-nav/app-nav.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatListModule } from '@angular/material/list'; 
 
 @NgModule({
   declarations: [AppComponent, MapComponent, PopupComponent, AppNavComponent],
@@ -32,6 +35,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     FormsModule,
     MatToolbarModule,
     MatGridListModule,
+    MatMenuModule,
+    FlexLayoutModule,
+    MatListModule,
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent],
