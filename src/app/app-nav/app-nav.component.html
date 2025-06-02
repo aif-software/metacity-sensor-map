@@ -3,7 +3,7 @@
     <div>
       <a class="metacityTextLogo" href="https://metacity.fi">MetaCity</a>
     </div>
-    <mat-button-toggle-group
+    <mat-button-toggle-group fxHide fxShow.gt-lg
       class="toggleButtonGroup"
       multiple
       hideMultipleSelectionIndicator="true"
@@ -14,15 +14,41 @@
           matTooltip="{{ type }}"
           matTooltipPosition="below"
           value="{{ type }}"
+          checked="{{!filteredSensorTypes.get(type)}}"
           (change)="filterSensors(filterSensorTypes.value)"
           #filterSensorTypes
           >{{ type }}</mat-button-toggle
         >
       </ng-container>
     </mat-button-toggle-group>
-    <div class="cityPlanArea">
+    <section fxHide fxShow.lt-xl>
+      <button
+      class="flatButton"
+      mat-flat-button
+      [matMenuTriggerFor]="menu"
+      aria-label="Button with a menu"
+      >
+      Sensorit
+      </button>
+      <mat-menu #menu="matMenu">
+        <div (click)="$event.stopPropagation()">
+          <mat-selection-list>
+            <mat-list-option *ngFor="let type of sensorTypes" [value]="type"
+            matTooltip="{{ type }}"
+            matTooltipPosition="right"
+            togglePosition="before"
+            selected="{{filteredSensorTypes.get(type)}}"
+            (click)="filterSensors(type)">
+              {{ type }}
+            </mat-list-option>
+          </mat-selection-list>
+        </div>
+      </mat-menu>
+    </section>
+    <div fxHide fxShow.gt-lg class="cityPlanArea">
       <mat-button-toggle
         class="toggleButton"
+        checked="{{this.measuringDirectionVisible}}"
         mat-flat-button
         (change)="toggleDirectionLayerVisibility()"
       >
@@ -30,6 +56,7 @@
       </mat-button-toggle>
       <mat-button-toggle
         class="toggleButton"
+        checked="{{this.flightPathVisible}}"
         mat-flat-button
         (change)="togglePathVisibility()"
       >
@@ -37,12 +64,13 @@
       </mat-button-toggle>
       <mat-button-toggle
         class="toggleButton"
+        checked="{{this.cityPlanVisible}}"
         mat-flat-button
         (change)="togglecityPlanVisibility()"
       >
         Asemakaava
       </mat-button-toggle>
-      <mat-slider
+        <mat-slider
         *ngIf="cityPlanVisible"
         #opacitySlider
         id="opacitySlider"
@@ -61,7 +89,44 @@
         />
       </mat-slider>
     </div>
-    <div class="sliderHeaderArea">
+    <section fxHide fxShow.lt-xl>
+      <button
+      class="flatButton"
+      mat-flat-button
+      [matMenuTriggerFor]="settingsMenu"
+      aria-label="Button with a menu"
+      >
+      Asetukset
+      </button>
+      <mat-menu #settingsMenu="matMenu">
+        <div (click)="$event.stopPropagation()">
+          <mat-selection-list>
+            <mat-list-option
+            matTooltipPosition="right"
+            togglePosition="before"
+            selected="{{this.measuringDirectionVisible}}"
+            (click)="toggleDirectionLayerVisibility()">
+              Mittaussuunta
+            </mat-list-option>
+            <mat-list-option
+            matTooltipPosition="right"
+            togglePosition="before"
+            selected="{{this.flightPathVisible}}"
+            (click)="togglePathVisibility()">
+              Reitit
+            </mat-list-option>
+            <mat-list-option
+            matTooltipPosition="right"
+            togglePosition="before"
+            selected="{{this.cityPlanVisible}}"
+            (click)="togglecityPlanVisibility()">
+              Asemakaava
+            </mat-list-option>
+          </mat-selection-list>
+        </div>
+      </mat-menu>
+    </section>
+    <div class="sliderHeaderArea" fxHide fxShow.gt-lg>
       <h1 class="elevationText">Elevation</h1>
       <div class="sliderArea">
         <p class="elevationValueLeft">{{ elevationRange[0] + "m" }}</p>
@@ -92,6 +157,42 @@
         </mat-slider>
         <p class="elevationValueRight">{{ elevationRange[1] + "m" }}</p>
       </div>
+    </div>
+    <div fxHide fxShow.lt-xl>
+      <mat-card class="elevationSliderCard">
+        <div class="sliderHeaderArea">
+          <h1 class="elevationText">Elevation</h1>
+        <div class="sliderArea">
+          <p class="elevationValueLeft">{{ elevationRange[0] + "m" }}</p>
+          <mat-slider
+            #rangeSlider
+            id="rangeSlider"
+            class="rangeSlider"
+            min="-50"
+            max="50"
+            step="5"
+            showTickMarks="true"
+          >
+            <!-- If you want realtime updates on sliders, swap (change) to (input)-->
+            <input
+              matTooltip="{{ elevationRange[0] }}"
+              value="elevationRange[0]"
+              [(ngModel)]="elevationRange[0]"
+              (change)="onSliderChange()"
+              matSliderStartThumb
+            />
+            <input
+              matTooltip="{{ elevationRange[1] }}"
+              value="elevationRange[1]"
+              [(ngModel)]="elevationRange[1]"
+              (change)="onSliderChange()"
+              matSliderEndThumb
+            />
+          </mat-slider>
+          <p class="elevationValueRight">{{ elevationRange[1] + "m" }}</p>
+        </div>
+        </div>
+      </mat-card>
     </div>
   </mat-toolbar>
   <app-map></app-map>
