@@ -248,7 +248,7 @@ export class MapComponent implements AfterViewInit {
           ) {
             // Connects to the traffic light API
             this.markerService
-              .getTrafficLightData(marker.id)
+              .getTrafficLightData(marker.name)
               .subscribe((data: any) => {
                 var totalWait: number = 0;
 
@@ -363,7 +363,7 @@ export class MapComponent implements AfterViewInit {
         } else {
           this.logger.log(marker.sensorType);
         }
-      }
+      } 
     });
   }
 
