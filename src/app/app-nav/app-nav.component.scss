@@ -1,9 +1,13 @@
+@import "../../styles.scss";
+
 .app-nav {
   height: 100%;
   width: 100%;
+  min-width: 530px;
   position: relative;
 }
 
+@media #{$gt-lg} {
 .header {
   height: 4em;
   position: absolute;
@@ -21,24 +25,14 @@
   z-index: 1000;
 }
 
+
+  mat-button-toggle-group {
+    position: relative;
+  }
+
 .elevationText {
   font-family: "BarlowLight";
   margin-bottom: 1rem;
-}
-
-mat-button-toggle-group {
-  position: relative;
-  margin-left: 0px;
-}
-
-.metacityTextLogo {
-  display: inline-block;
-  color: #001e95;
-  font-size: 3rem;
-  margin-left: -0.5em;
-  padding-top: 0.2em;
-  text-decoration: none;
-  font-family: "OulunGraadi";
 }
 
 .sliderHeaderArea {
@@ -63,22 +57,6 @@ mat-button-toggle-group {
   position: absolute;
 }
 
-.cityPlanArea {
-  width: 20%;
-  justify-content: center;
-}
-
-.toggleButton {
-  margin-right: 2em;
-  font-size: 15px;
-}
-
-.opacitySlider {
-  pointer-events: auto;
-  width: 8em;
-  left: 1em;
-}
-
 .elevationValueLeft {
   position: absolute;
   margin-left: -22rem;
@@ -89,6 +67,117 @@ mat-button-toggle-group {
   position: absolute;
   margin-right: -22rem;
   margin-bottom: 0.5rem;
+}
+
+}
+
+@media #{$lt-xl} {
+  .header {
+    height: 4em;
+    position: absolute;
+    max-width: 97%;
+    border-radius: 10px;
+    transform: translateX(-50%);
+    top: 1rem;
+    left: 50%;
+    display: flex;
+    // background-color: rgb(241, 241, 241);
+    background: linear-gradient(#ffffff, #f0f0f0);
+    align-items: center;
+    border: 1px solid black;
+    z-index: 1000;
+  }
+  
+
+  mat-button-toggle-group {
+    position: relative;
+  }
+
+.elevationText {
+  font-family: "BarlowLight";
+  margin-bottom: -0.8rem;
+}
+
+.sliderHeaderArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sliderArea {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 15em;
+  height: 2.5em;
+  justify-content: center;
+}
+
+.rangeSlider {
+  pointer-events: auto;
+  width: 8em;
+  position: absolute;
+}
+
+.elevationValueLeft {
+  position: absolute;
+  margin-left: -16rem;
+  margin-bottom: 0.5rem;
+}
+
+.elevationValueRight {
+  position: absolute;
+  margin-right: -16rem;
+  margin-bottom: 0.5rem;
+}
+
+.elevationSliderCard {
+  border: 1px solid black;
+  position: absolute;
+  right: 3%;
+  top: 4.3em;
+}
+}
+
+.metacityTextLogo {
+  display: inline-block;
+  color: #001e95;
+  font-size: 3rem;
+  padding-top: 0.2em;
+  margin-right: 1rem;
+  text-decoration: none;
+  font-family: "OulunGraadi";
+}
+
+.cityPlanArea {
+  width: 20%;
+  justify-content: center;
+}
+
+.toggleButton {
+  margin-right: 2em;
+  font-size: 15px;
+}
+
+.flatButton{
+  margin-right: 2em;
+  font-size: 15px;
+  border: 1px solid gray;
+  color: black !important;
+  background-color: rgba(255, 255, 255, 0) !important;
+}
+
+.dropdownButton {
+  border: 1px solid black;
+  border-radius: 15px;
+  margin-right: 2em;
+  font-size: 15px;
+}
+
+.opacitySlider {
+  pointer-events: auto;
+  width: 8em;
+  left: 1em;
 }
 
 .select {

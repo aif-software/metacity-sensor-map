@@ -118,6 +118,10 @@ export class AppNavComponent implements AfterViewInit {
     }
   }
 
+  onListOptionClick(event: MouseEvent, type: string): void {
+    this.filterSensors(type);
+  }
+
   /**
    * Changes the markers that are displayed when the elevation changes
    */
